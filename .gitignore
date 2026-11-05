@@ -1,0 +1,12 @@
+*
+# trace tex only
+!*.tex
+!main.pdf
+
+# Static GitHub Pages reader (keep local TeX build artifacts ignored).
+!.gitignore
+!index.html
+!README.md
+!.nojekyll
+!assets/
+!assets/**

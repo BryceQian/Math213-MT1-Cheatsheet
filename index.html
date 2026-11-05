@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f8f9fb">
+    <meta name="description" content="MATH 213 MT1 Cheatsheet 在线阅读器">
+    <title>MATH 213 · 在线阅读</title>
+    <link rel="stylesheet" href="./assets/pdfjs/web/pdf_viewer.css">
+    <link rel="stylesheet" href="./assets/reader.css">
+    <script type="module" src="./assets/reader.mjs"></script>
+  </head>
+  <body>
+    <header class="header">
+      <div class="identity">
+        <span class="book-mark" aria-hidden="true">M</span>
+        <div><h1>MATH 213 <span>MT1 Cheatsheet</span></h1><p>课程笔记 / 在线阅读</p></div>
+      </div>
+      <div class="toolbar" role="group" aria-label="阅读工具">
+        <form id="page-form" class="control-group" aria-label="页面导航">
+          <button id="previous-page" type="button" title="上一页" aria-label="上一页" disabled>←</button>
+          <label class="sr-only" for="page-number">跳转到页码</label>
+          <input id="page-number" type="number" min="1" step="1" value="1" inputmode="numeric" disabled>
+          <span class="page-total">/ <span id="page-count">—</span></span>
+          <button id="next-page" type="button" title="下一页" aria-label="下一页" disabled>→</button>
+        </form>
+        <div class="control-group" role="group" aria-label="缩放工具">
+          <button id="zoom-out" type="button" title="缩小" aria-label="缩小" disabled>−</button>
+          <output id="zoom-value" aria-live="polite" aria-label="当前缩放比例">—</output>
+          <button id="zoom-in" type="button" title="放大" aria-label="放大" disabled>+</button>
+          <span class="divider" aria-hidden="true"></span>
+          <button id="fit-width" class="text-button" type="button" aria-pressed="true" disabled>适应宽度</button>
+        </div>
+      </div>
+      <form id="search-form" class="search" role="search" aria-label="搜索文档">
+        <label class="sr-only" for="search-input">搜索文档文本</label>
+        <input id="search-input" type="search" placeholder="搜索文档…" autocomplete="off" disabled>
+        <button id="search-previous" type="button" title="上一个结果（Shift + Enter）" aria-label="上一个搜索结果" disabled>↑</button>
+        <button id="search-next" type="submit" title="下一个结果（Enter）" aria-label="下一个搜索结果" disabled>↓</button>
+        <output id="search-status" aria-live="polite"></output>
+      </form>
+    </header>
+    <main class="reading-area">
+      <div id="viewer-container" tabindex="0" role="region" aria-label="PDF 文档，支持滚动阅读" aria-busy="true">
+        <div id="viewer" class="pdfViewer"></div>
+      </div>
+      <div id="loading-status" class="notice" role="status">正在加载文档…</div>
+      <div id="error-message" class="notice error" role="alert" hidden>
+        <strong>文档加载失败</strong>
+        <p id="error-detail">请检查网络连接后重试。</p>
+        <button id="retry" class="text-button" type="button">重新加载</button>
+      </div>
+      <noscript><p class="notice">请启用 JavaScript，以使用在线 PDF 阅读器。</p></noscript>
+    </main>
+    <footer>课程参考资料 <span aria-hidden="true">·</span> <span id="reading-status" role="status">准备阅读</span></footer>
+  </body>
+</html>
