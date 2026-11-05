@@ -2,51 +2,44 @@
 
 [在线阅读](https://BryceQian.github.io/Math213-MT1-Cheatsheet/)
 
-基于 Mozilla PDF.js 的静态阅读页面，默认阅读仓库根目录的 `main.pdf`。支持连续滚动、上一页 / 下一页、页码跳转、缩放、适应宽度，以及带高亮和结果切换的全文搜索。桌面端与移动端均可使用，无需 Node.js 构建或后端服务。
+直接使用 **Mozilla PDF.js 官方完整阅读器 6.5.438（legacy 兼容发行包）**，默认打开仓库根目录的 `main.pdf`。首页自动跳转到阅读器，不经过浏览器原生 PDF Viewer，也不在地址栏传入 PDF 原文件链接。
+
+工具栏、搜索、页码跳转、缩放、适应宽度、连续滚动、双指手势及渲染均由官方成品提供。没有自定义手势、缩放算法、Canvas 渲染循环或前端框架；此前的自定义阅读页面、手势模块及其测试已移除。
 
 ## GitHub Pages 部署
 
-1. 将本次新增及修改的文件提交并推送至 GitHub，包括完整的 `assets/`、`index.html`、`.nojekyll` 和根目录 `main.pdf`。
+1. 提交并推送完整的 `assets/`、`index.html`、`.nojekyll` 和根目录 `main.pdf`。
 2. 打开仓库 **Settings → Pages**。
-3. 在 **Build and deployment → Source** 选择 **Deploy from a branch**。
-4. 选择 **main** 分支、**/ (root)** 目录并保存。如果使用其他发布分支，请选择实际存放这些文件的分支。
-5. 等待 GitHub 的 Pages 部署完成，然后访问上方在线阅读入口。最终网址以 Settings → Pages 显示的地址为准。
+3. 选择 **Deploy from a branch → main → / (root)**，保存。
+4. 等待部署完成，访问上方在线阅读入口。已启用此配置的仓库会在推送后自动更新。
 
-这是仓库项目站点，网址带有 `/Math213-MT1-Cheatsheet/` 前缀。HTML、样式、PDF、worker 和字体均使用相对路径；JavaScript 内的辅助资源基于 `import.meta.url` 解析，因此也兼容用户主页站点与自定义域名。仓库更名或转移后请同步修改本 README 的在线阅读地址。
+无需构建、Node.js 或后端。入口、阅读器资源和默认 PDF 均使用相对路径，兼容 `/Math213-MT1-Cheatsheet/` 项目站点前缀、用户主页站点及自定义域名。仓库更名或转移后请修改本 README 的在线入口。
 
-替换根目录 `main.pdf` 并推送即可更新阅读内容。原有 LaTeX 源文件与编译方式不变。当前修改只提供网站文件，不会自动开启仓库的 Pages 设置。
+替换根目录 `main.pdf` 并推送即可更新内容。原有 LaTeX 文件及编译方式不变。
 
-## 使用
+## 使用与兼容性
 
-- 在页码框输入有效页码并按 Enter 跳转；滚动时页码自动更新。
-- 使用 `−` / `+` 调整缩放，或点击「适应宽度」。适应宽度模式会随窗口变化调整。
-- 手机上可在文档区域双指捏合缩放、双指平移，单指滑动继续阅读；缩放围绕双指位置进行，工具栏保持原大小。手势缩放和按钮共用 25%–500% 的范围，点击「适应宽度」可恢复初始阅读布局。
-- 输入关键词后自动搜索；Enter / Shift + Enter 或搜索框旁的箭头切换结果。
-- Ctrl + F / Command + F 聚焦文档搜索；在搜索框按 Escape 清空搜索并返回阅读区。
-- 搜索依赖 PDF 自带文本；纯扫描图片需要先做 OCR。
+- 使用官方工具栏翻页、跳转页码、缩放或选择「适应宽度」。
+- 使用搜索按钮或 Ctrl + F / Command + F 搜索 PDF 文本；扫描图片需先做 OCR。
+- 移动端手势及性能策略沿用官方实现，实际体验取决于设备和浏览器。iPhone / iPad 的微信内置浏览器若体验受限，可从微信菜单选择「在 Safari 中打开」。本站没有额外叠加微信手势补丁。
+- 请使用近期的 Safari、Chrome、Edge 或 Firefox。`legacy` 构建包含兼容补充，但不能保证支持所有旧浏览器或内置 WebView。
+- 更新后若仍看到旧界面，请刷新或关闭旧页面重新打开。
 
-## 本地预览与兼容性
+本地预览：在仓库根目录运行 `python -m http.server 8000`，访问 `http://localhost:8000/`。直接双击 HTML 的 `file://` 访问不受支持。
 
-线上运行只需 GitHub Pages 的静态托管。本地调试时可在仓库根目录运行 `python -m http.server 8000`，然后访问 `http://localhost:8000/`。不要直接双击 `index.html`，浏览器的 `file://` 安全限制会阻止模块和 PDF 请求。
+## 文件与上游来源
 
-请使用支持 ES modules、Web Workers 与现代 PDF.js API 的近期 Chrome、Edge、Firefox 或 Safari。阅读器使用官方 `legacy` 兼容构建，以提供所需的新 JavaScript API 补充；这不保证支持所有旧浏览器。加载失败时页面会提供重试提示。
-
-## 文件与依赖
-
-- `index.html`：阅读器入口及无障碍工具栏。
-- `assets/reader.css`：响应式页面样式。
-- `assets/reader.mjs`：PDF.js 渲染、导航、缩放、搜索及加载状态。
-- `assets/touch-zoom.mjs`：接入 PDF.js 自带的 `TouchManager` 与 `PDFViewer.updateScale`，支持双指缩放与平移，无额外手势依赖。
-- `assets/pdfjs/`：未经修改的官方 `pdfjs-dist` **6.5.438** 运行文件，包括 `legacy/` 中配套的 core、worker、viewer 兼容组件，以及共享的 CSS、CMaps、标准字体、WASM、ICC 配置及图标。
-- `assets/pdfjs/VERSION.json`：固定版本、官方包来源与 SHA-512 校验值；下载时已校验完整性。
-- `assets/pdfjs/LICENSE` 及各资源目录中的许可证：保留上游许可声明。
+- `index.html`：跳转到官方阅读器的静态入口。
+- `assets/pdfjs/`：来自[官方 6.5.438 release](https://github.com/mozilla/pdf.js/releases/tag/v6.5.438) 的完整 legacy 运行文件，含 viewer、core、worker、字体、CMaps、WASM、图标及全部语言包。
+- `assets/pdfjs/web/viewer.html`：保留官方 HTML，仅修改标题并引用以下两个站点配置文件。
+- `assets/viewer-config.js`：通过官方 `webviewerloaded` 启动钩子设置默认 PDF，以及只读、隐藏下载和打印的官方选项。
+- `assets/viewer-overrides.css`：仅隐藏下载、打印、打开本地文件、页面导出和编辑入口，不改动布局和手势样式。
+- `assets/pdfjs/VERSION.json`：来源、GitHub release 的 SHA-256 校验值和集成改动记录。
+- `assets/pdfjs/LICENSE` 及资源目录许可证：保留上游许可声明。
 - `.nojekyll`：直接发布静态资源。
-- `.gitignore`：保留已有编译产物忽略规则，同时允许跟踪阅读器文件。
 
-依赖来源：[Mozilla PDF.js 官方发行版](https://github.com/mozilla/pdf.js/releases/tag/v6.5.438)、[官方 npm 发行包](https://www.npmjs.com/package/pdfjs-dist/v/6.5.438)。运行时全部从本站加载，不依赖第三方 CDN。升级时应从同一官方发行包同步替换 core、worker、viewer 与配套资源，并更新版本记录，避免版本混用。
-
-手势回归检查：安装 Node.js 22.13+ 后运行 `node --test tests/touch-zoom.test.mjs`，无需安装测试依赖。测试使用官方 `TouchManager` 模拟触摸事件，覆盖缩放、平移、取消、边界及单指滚动；不替代 iOS / Android 真机检查。
+官方 viewer/core/worker 的 JavaScript 和渲染 CSS 均未经修改。仅省略开发用 source maps 和官方演示 PDF；运行资源全部从本站加载，无 CDN 依赖。升级时整体替换同一官方发行包，再向 `web/viewer.html` 加回两个配置文件引用和标题，更新版本记录。
 
 ## 下载与打印说明
 
-页面没有下载、打印按钮或 PDF 原文件链接，也不加载官方完整 viewer 的工具栏。隐藏这些入口只是降低普通用户下载的便利性，**不是 DRM 或版权保护措施**。浏览器仍需请求 PDF 原文件才能渲染，用户仍可通过网络请求、开发者工具、浏览器自身功能等方式获取或打印内容。
+隐藏下载、打印按钮和原文件入口只是降低普通用户下载的便利性，**不是 DRM 或版权保护措施**。浏览器仍需获取 PDF 才能渲染，用户仍可通过网络请求、开发者工具或浏览器自身功能获取、打印内容。

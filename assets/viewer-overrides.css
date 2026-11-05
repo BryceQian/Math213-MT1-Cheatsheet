@@ -1,0 +1,14 @@
+/* Presentation only: retain the official viewer layout and all touch behavior. */
+#downloadButton,
+#secondaryDownload,
+#printButton,
+#secondaryPrint,
+#secondaryOpenFile,
+#viewsManagerAddFileButton,
+#viewsManagerStatusAction,
+#viewBookmark,
+#viewBookmarkSeparator,
+#editorModeButtons,
+#editorModeSeparator {
+  display: none !important;
+}
