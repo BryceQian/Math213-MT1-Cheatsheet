@@ -20,6 +20,7 @@
 
 - 在页码框输入有效页码并按 Enter 跳转；滚动时页码自动更新。
 - 使用 `−` / `+` 调整缩放，或点击「适应宽度」。适应宽度模式会随窗口变化调整。
+- 手机上可在文档区域双指捏合缩放、双指平移，单指滑动继续阅读；缩放围绕双指位置进行，工具栏保持原大小。手势缩放和按钮共用 25%–500% 的范围，点击「适应宽度」可恢复初始阅读布局。
 - 输入关键词后自动搜索；Enter / Shift + Enter 或搜索框旁的箭头切换结果。
 - Ctrl + F / Command + F 聚焦文档搜索；在搜索框按 Escape 清空搜索并返回阅读区。
 - 搜索依赖 PDF 自带文本；纯扫描图片需要先做 OCR。
@@ -35,6 +36,7 @@
 - `index.html`：阅读器入口及无障碍工具栏。
 - `assets/reader.css`：响应式页面样式。
 - `assets/reader.mjs`：PDF.js 渲染、导航、缩放、搜索及加载状态。
+- `assets/touch-zoom.mjs`：接入 PDF.js 自带的 `TouchManager` 与 `PDFViewer.updateScale`，支持双指缩放与平移，无额外手势依赖。
 - `assets/pdfjs/`：未经修改的官方 `pdfjs-dist` **6.5.438** 运行文件，包括 `legacy/` 中配套的 core、worker、viewer 兼容组件，以及共享的 CSS、CMaps、标准字体、WASM、ICC 配置及图标。
 - `assets/pdfjs/VERSION.json`：固定版本、官方包来源与 SHA-512 校验值；下载时已校验完整性。
 - `assets/pdfjs/LICENSE` 及各资源目录中的许可证：保留上游许可声明。
@@ -42,6 +44,8 @@
 - `.gitignore`：保留已有编译产物忽略规则，同时允许跟踪阅读器文件。
 
 依赖来源：[Mozilla PDF.js 官方发行版](https://github.com/mozilla/pdf.js/releases/tag/v6.5.438)、[官方 npm 发行包](https://www.npmjs.com/package/pdfjs-dist/v/6.5.438)。运行时全部从本站加载，不依赖第三方 CDN。升级时应从同一官方发行包同步替换 core、worker、viewer 与配套资源，并更新版本记录，避免版本混用。
+
+手势回归检查：安装 Node.js 22.13+ 后运行 `node --test tests/touch-zoom.test.mjs`，无需安装测试依赖。测试使用官方 `TouchManager` 模拟触摸事件，覆盖缩放、平移、取消、边界及单指滚动；不替代 iOS / Android 真机检查。
 
 ## 下载与打印说明
 

@@ -1,3 +1,5 @@
+import { bindTouchZoom, MIN_SCALE, MAX_SCALE } from "./touch-zoom.mjs";
+
 const byId = id => document.getElementById(id);
 const container = byId("viewer-container");
 const pageInput = byId("page-number");
@@ -47,6 +49,7 @@ async function initialize() {
     maxCanvasDim: 8192,
   });
   linkService.setViewer(viewer);
+  bindTouchZoom({ container, viewer, TouchManager: pdfjs.TouchManager, isEnabled: () => ready });
 
   function updateNavigation() {
     pageInput.value = viewer.currentPageNumber;
@@ -72,8 +75,8 @@ async function initialize() {
   eventBus.on("scalechanging", ({ scale }) => {
     byId("zoom-value").textContent = `${Math.round(scale * 100)}%`;
     byId("fit-width").setAttribute("aria-pressed", String(viewer.currentScaleValue === "page-width"));
-    byId("zoom-out").disabled = scale <= 0.25;
-    byId("zoom-in").disabled = scale >= 5;
+    byId("zoom-out").disabled = scale <= MIN_SCALE;
+    byId("zoom-in").disabled = scale >= MAX_SCALE;
   });
 
   byId("previous-page").addEventListener("click", () => viewer.previousPage());
@@ -89,7 +92,7 @@ async function initialize() {
     updateNavigation();
   });
   function zoom(factor) {
-    if (ready) viewer.currentScale = Math.min(5, Math.max(0.25, viewer.currentScale * factor));
+    if (ready) viewer.currentScale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, viewer.currentScale * factor));
   }
   byId("zoom-out").addEventListener("click", () => zoom(1 / 1.2));
   byId("zoom-in").addEventListener("click", () => zoom(1.2));

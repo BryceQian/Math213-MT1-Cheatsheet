@@ -45,7 +45,11 @@ input { border: 1px solid #d5dee5; border-radius: 5px; background: white; color:
 .search button { min-width: 30px; padding: 0 4px; font-size: 16px; }
 #search-status { position: absolute; right: 64px; top: 100%; font-size: 10px; color: #687b8d; white-space: nowrap; }
 .reading-area { flex: 1; min-height: 0; position: relative; }
-#viewer-container { position: absolute; inset: 0; overflow: auto; overscroll-behavior: contain; scrollbar-gutter: stable; }
+#viewer-container {
+  position: absolute; inset: 0; overflow: auto; overscroll-behavior: contain; scrollbar-gutter: stable;
+  /* PDF.js handles pinch zoom here; the browser still handles single-finger pan. */
+  touch-action: pan-x pan-y;
+}
 #viewer { padding: 24px 0 12px; }
 #viewer .page { margin: 0 auto 20px; border: 0; box-shadow: 0 3px 18px #1d344527; }
 .notice {

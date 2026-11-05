@@ -10,3 +10,5 @@
 !.nojekyll
 !assets/
 !assets/**
+!tests/
+!tests/**
