@@ -10,5 +10,6 @@
   ],
   "modified": {
     "web/viewer.html": "Document title; load site configuration and control-hiding stylesheet. All viewer JavaScript and rendering CSS are unmodified."
-  }
+  },
+  "integration": "Root index.html copies web/viewer.html with six resource references adjusted; shared startup options resolve all assets and default PDF relative to the configuration script. No redirect or iframe."
 }
