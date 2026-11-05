@@ -1,0 +1,419 @@
+% !TeX program = xelatex
+% Compile: latexmk -xelatex -synctex=1 -outdir=build Math213_Cheatsheet.tex
+% A4 portrait, two pages: print duplex, flip on long edge, actual size (100%).
+% Source: Math213_Cheatsheet_Draft.md and local Lecture 8--9 slides.
+\documentclass[a4paper,twoside,fontset=none]{ctexart}
+\usepackage[top=7mm,bottom=11mm,left=7mm,right=7mm,footskip=6mm]{geometry}
+\usepackage{amsmath,amssymb,mathtools,newtxmath}
+\setmainfont{texgyretermes-regular.otf}[BoldFont=texgyretermes-bold.otf,ItalicFont=texgyretermes-italic.otf,BoldItalicFont=texgyretermes-bolditalic.otf]
+\setCJKmainfont{FandolSong-Regular.otf}[BoldFont=FandolSong-Bold.otf]
+\setCJKsansfont{FandolHei-Regular.otf}[BoldFont=FandolHei-Bold.otf]
+\usepackage{xcolor,fancyhdr,array,multicol,booktabs}
+\usepackage[unicode,pdfauthor={钱秉宏},pdftitle={MATH 213 MT1 Cheatsheet},hidelinks]{hyperref}
+\definecolor{ink}{HTML}{193A50}
+\definecolor{wash}{HTML}{E9EFF2}
+\pagestyle{fancy}\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.25pt}
+\fancyfoot[C]{\fontsize{8}{10}\selectfont Copyright \textcopyright\ 钱秉宏 2026\quad 版权所有}
+\fancyfoot[R]{\fontsize{7}{9}\selectfont\thepage\,/\,2}
+\setlength{\parindent}{0pt}\setlength{\parskip}{0.6pt}
+\setlength{\abovedisplayskip}{1.5pt}\setlength{\belowdisplayskip}{1.5pt}
+\setlength{\abovedisplayshortskip}{1pt}\setlength{\belowdisplayshortskip}{1pt}
+\setlength{\jot}{1pt}\setlength{\tabcolsep}{2pt}
+\renewcommand{\arraystretch}{1.03}
+\newcommand{\N}{\mathbb{N}}\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}\newcommand{\R}{\mathbb{R}}
+\newcommand{\Pow}{\mathcal{P}}
+\newcommand{\h}[1]{\par\vspace{2pt}\noindent\colorbox{wash}{\parbox{\dimexpr\linewidth-2\fboxsep}{\sffamily\bfseries\color{ink}\fontsize{8.2}{9.5}\selectfont #1}}\par\nobreak\vspace{1pt}}
+\renewcommand{\b}[1]{\textbf{#1}}
+% Use \block for a new topic and \b only for inline emphasis.
+\newcommand{\block}[1]{\par\noindent\textbf{#1}}
+\newcommand{\notebox}[2]{\par\vspace{1pt}\noindent\begingroup\setlength{\fboxsep}{3pt}\setlength{\fboxrule}{0.3pt}\fcolorbox{ink!45}{wash!45}{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}{\color{ink}\textbf{#1}：#2}}\endgroup\par\vspace{1pt}}
+\newcommand{\hint}[1]{\par\noindent{\color{ink}\b{证法}\,#1}\par}
+\newcommand{\eq}[1]{\par\noindent\(\displaystyle #1\)\par}
+\newcommand{\titleline}[2]{\noindent{\sffamily\bfseries\color{ink}\fontsize{14}{16}\selectfont MATH 213\quad MT1 \quad CHEATSHEET}\hfill{\fontsize{8}{10}\selectfont #1}\par\vspace{1pt}{\color{ink}\hrule height .7pt}\vspace{2pt}\noindent{\fontsize{7}{8.5}\selectfont #2}\par\vspace{2pt}}
+% Blocks start new paragraphs; all content flows through columns and pages automatically.
+\setlength{\columnsep}{.020\textwidth}
+\setlength{\multicolsep}{0pt}
+\raggedcolumns
+\newenvironment{sheetcolumns}{\linespread{1}\fontsize{7.4}{8.7}\selectfont\raggedright\emergencystretch=1em\begin{multicols}{3}}{\end{multicols}}
+\begin{document}
+\titleline{逻辑 · 集合 · 函数 · 算法 · 数论 · 密码学}{}
+\begin{sheetcolumns}
+\h{1\quad Propositional Logic（命题逻辑）}
+\block{Truth table（真值表）}：$n$ 个变量有 $2^n$ 行。
+\par\begin{tabular}{@{}cccccccc@{}}
+$p$&$q$&$\neg p$&$p\land q$&$p\lor q$&$p\oplus q$&$p\to q$&$p\leftrightarrow q$\\\midrule[.4pt]
+T&T&F&T&T&F&T&T\\
+T&F&F&F&T&T&F&F\\
+F&T&T&F&T&T&T&F\\
+F&F&T&F&F&F&T&T
+\end{tabular}\par
+\block{Implication（蕴含）}与双条件、异或：
+\eq{\begin{aligned}p\to q&\equiv\neg p\lor q\equiv(\neg q\to\neg p),\\
+\neg(p\to q)&\equiv p\land\neg q,\\
+p\leftrightarrow q&\equiv(p\to q)\land(q\to p)\\&\equiv(p\land q)\lor(\neg p\land\neg q),\\
+p\oplus q&\equiv(p\lor q)\land\neg(p\land q)\\&\equiv\neg(p\leftrightarrow q).
+\end{aligned}}
+\block{翻译}：p if q：$q\to p$；p only if q：$p\to q$；p iff q：$p\leftrightarrow q$。$p\to q$ 中 $p$ 充分，$q$ 必要。
+\block{Converse（逆）} $q\to p$；
+\block{Inverse（否）} $\neg p\to\neg q$；
+\block{Contrapositive（逆否）} $\neg q\to\neg p$。原命题与逆否等价；逆与否等价。
+\block{Logical equivalences（逻辑等价律）}
+\eq{\begin{aligned}
+\text{恒等： }&p\land T\equiv p,\quad p\lor F\equiv p;\\
+\text{支配： }&p\lor T\equiv T,\quad p\land F\equiv F;\\
+\text{幂等： }&p\lor p\equiv p,\quad p\land p\equiv p;\\
+\text{双否： }&\neg\neg p\equiv p;\\
+\text{交换： }&p\lor q\equiv q\lor p,\quad p\land q\equiv q\land p;\\
+\text{结合： }&(p\lor q)\lor r\equiv p\lor(q\lor r),\\
+&(p\land q)\land r\equiv p\land(q\land r);\\
+\text{分配： }&p\lor(q\land r)\equiv(p\lor q)\land(p\lor r),\\
+&p\land(q\lor r)\equiv(p\land q)\lor(p\land r);\\
+\text{De Morgan： }&\neg(p\lor q)\equiv\neg p\land\neg q,\\
+&\neg(p\land q)\equiv\neg p\lor\neg q;\\
+\text{吸收： }&p\lor(p\land q)\equiv p,\\&p\land(p\lor q)\equiv p;\\
+\text{否定： }&p\lor\neg p\equiv T,\quad p\land\neg p\equiv F.
+\end{aligned}}
+\block{Tautology（永真）}/\b{Contradiction（矛盾）}/\b{Contingency（偶然）}：恒真/恒假/其余。
+$p\equiv q\iff(p\leftrightarrow q)$ 恒真。
+优先级：量词、$\neg,\land,\lor,\to,\leftrightarrow$。
+\block{Bitwise（按位）} AND/OR/XOR：$1=T,0=F$。
+\h{2\quad Predicate Logic（谓词与量词）}
+有限论域 $D=\{x_1,\ldots,x_n\}$：
+\eq{\begin{aligned}\forall x\in D\,P(x)&\equiv\bigwedge_{i}P(x_i),\\
+\exists x\in D\,P(x)&\equiv\bigvee_{i}P(x_i).\end{aligned}}
+$D=\varnothing$：全称为 $T$，存在为 $F$。
+\eq{\begin{aligned}
+\forall x\in A\,P(x)&\equiv\forall x(x\in A\to P(x)),\\
+\exists x\in A\,P(x)&\equiv\exists x(x\in A\land P(x)),\\
+\neg\forall xP(x)&\equiv\exists x\neg P(x),\\
+\neg\exists xP(x)&\equiv\forall x\neg P(x).
+\end{aligned}}
+嵌套否定：逐层交换 $\forall/\exists$，最后否定谓词。
+\eq{\begin{aligned}
+\neg\forall x\exists yP(x,y)&\equiv\exists x\forall y\neg P(x,y),\\
+\neg\exists x\forall yP(x,y)&\equiv\forall x\exists y\neg P(x,y).
+\end{aligned}}
+同类量词可交换：$\forall x\forall y\equiv\forall y\forall x$，$\exists x\exists y\equiv\exists y\exists x$（同一谓词）。混合一般不可换：$\forall x\exists y$ 的 $y$ 可依赖 $x$；$\exists y\forall x$ 要同一个 $y$。
+\block{Uniqueness（唯一性）}：
+\eq{\exists!xP(x)\equiv\exists x\bigl(P(x)\land\forall y(P(y)\to y=x)\bigr).}
+\h{3\quad Inference（推理）与 Proof（证明）}
+有效 $\iff(p_1\land\cdots\land p_n)\to q$ 恒真。
+逗号隔前提，$\vdash$ 后为结论。
+\par\begin{tabular}{@{}ll@{}}
+Modus Ponens（肯前）&$p,p\to q\vdash q$\\
+Modus Tollens（否后）&$\neg q,p\to q\vdash\neg p$\\
+Hypothetical（假言）&$p\to q,q\to r\vdash p\to r$\\
+Disjunctive（选言）&$p\lor q,\neg p\vdash q$\\
+Addition（附加）&$p\vdash p\lor q$\\
+Simplification（化简）&$p\land q\vdash p\ (\text{或 }q)$\\
+Conjunction（合取）&$p,q\vdash p\land q$\\
+Resolution（归结）&$p\lor q,\neg p\lor r\vdash q\lor r$
+\end{tabular}\par
+\block{量词推理}：处理量词与对象的转换（$c\in D$）。\par
+\block{UI（全称实例化）} Universal Instantiation：$\forall xP(x)\vdash P(c)$。所有对象满足，故指定对象也满足。\par
+\block{UG（全称概括）} Universal Generalization：对\b{任意} $c$ 证 $P(c)$，得 $\forall xP(x)$；不能用 $c$ 的特殊性质或只验一个例子。\par
+\block{EI（存在实例化）} Existential Instantiation：由 $\exists xP(x)$，令一个新符号 $c$ 满足 $P(c)$。\par
+\block{EG（存在概括）} Existential Generalization：$P(c)\vdash\exists xP(x)$。例：小明满分，故存在满分学生。\par
+\block{配合使用}：$\forall x(P(x)\to Q(x))$ 经 UI 得 $P(c)\to Q(c)$，再结合 $P(c)$ 用肯前得 $Q(c)$。
+\block{Proof by contraposition（逆否证明）}：$\neg q\Rightarrow\neg p$；
+\block{Proof by contradiction（反证法）}：假设 $p\land\neg q$ 推出 $F$。
+\block{Proof by cases（分情况证明）}：$(\bigvee_i p_i)\to q\equiv\bigwedge_i(p_i\to q)$，须穷尽；等价性须双向证明。两种情况时：$(p_1\lor p_2)\to q\;\equiv\;(p_1\to q)\land(p_2\to q)$
+
+\block{Vacuous proof（空真证明）}：$p=F$；
+\block{Trivial proof（平凡证明）}：$q=T$。
+\h{4\quad Sets（集合）与 Set Operations（运算）}
+$\Z=\{\ldots,-1,0,1,\ldots\}$（整数集）；$\Q=\{p/q:p,q\in\Z,q\ne0\}$（有理数集）；\\
+$\R$ 实数，$\mathbb{C}$ 复数。
+\eq{\begin{aligned}
+A\subseteq B&\iff\forall x(x\in A\to x\in B),\\
+A\subsetneq B&\iff A\subseteq B\land A\ne B,\\
+A=B&\iff A\subseteq B\land B\subseteq A\\
+&\iff\forall x(x\in A\leftrightarrow x\in B),\\
+\Pow(A)&=\{S:S\subseteq A\},\quad |\Pow(A)|=2^{|A|},\\
+A\times B&=\{(a,b):a\in A,b\in B\},\\
+|A_1\times\cdots\times A_n|&=\prod_i|A_i|,\quad |A^n|=|A|^n.
+\end{aligned}}
+计数式用于有限集合；
+\block{Relation（关系）} $R\subseteq A\times B$。$\varnothing\subseteq A$；$|\varnothing|=0$；$|\{\varnothing\}|=1$；$\Pow(\varnothing)=\{\varnothing\}$。
+\eq{\begin{aligned}
+A\cup B&=\{x:x\in A\lor x\in B\},\\
+A\cap B&=\{x:x\in A\land x\in B\},\\
+A\setminus B&=A\cap\bar B,\quad\bar A=U\setminus A,\\
+x\in\bigcup_{i=1}^n A_i&\iff\exists i\in\{1,\ldots,n\}:x\in A_i,\\
+x\in\bigcap_{i=1}^n A_i&\iff\forall i\in\{1,\ldots,n\}:x\in A_i.
+\end{aligned}}
+\block{Disjoint（不相交）}：$A\cap B=\varnothing$。
+\block{Inclusion\textendash{}Exclusion（容斥）}：$|A\cup B|=|A|+|B|-|A\cap B|$。
+\hint{交集被计数两次，减去一次。}
+\block{Set identities（集合恒等式）}
+\eq{\begin{aligned}
+\text{恒等/支配： }&A\cup\varnothing=A,\ A\cap U=A,\\
+&A\cup U=U,\ A\cap\varnothing=\varnothing;\\
+\text{幂等/双补： }&A\cup A=A,\ A\cap A=A,\ \overline{\bar A}=A;\\
+\text{交换： }&A\cup B=B\cup A,\ A\cap B=B\cap A;\\
+\text{结合： }&(A\cup B)\cup C=A\cup(B\cup C),\\
+&(A\cap B)\cap C=A\cap(B\cap C);\\
+\text{分配： }&A\cup(B\cap C)=(A\cup B)\cap(A\cup C),\\
+&A\cap(B\cup C)=(A\cap B)\cup(A\cap C);\\
+\text{De Morgan： }&\overline{A\cup B}=\bar A\cap\bar B,\\
+&\overline{A\cap B}=\bar A\cup\bar B;\\
+\text{吸收： }&A\cup(A\cap B)=A,\\
+&A\cap(A\cup B)=A;\\
+\text{互补： }&A\cup\bar A=U,\quad A\cap\bar A=\varnothing.
+\end{aligned}}
+\h{5\quad 函数与取整}
+$f:A\to B$：每个 $a\in A$ 恰有一个输出；
+\block{Domain（定义域）} $A$；
+\block{Codomain（陪域）} $B$；
+\block{Range（值域）} $f(A)\subseteq B$。
+\eq{f(S)=\{f(s):s\in S\}\quad(S\subseteq A).}
+\block{Injective（单射）}：
+\eq{\forall x,y\in A:\ f(x)=f(y)\Rightarrow x=y.}
+等价于 $x\ne y\Rightarrow f(x)\ne f(y)$。
+\block{Surjective（满射）}：
+\eq{\forall b\in B\ \exists a\in A:\ f(a)=b\iff f(A)=B.}
+\block{Bijective（双射）}：单射且满射 $\iff$ 反函数 $f^{-1}:B\to A$ 存在；$f^{-1}(b)=a\iff f(a)=b$。
+有限且 $|A|=|B|$ 时，单射 $\iff$ 满射；无限时不保证。
+\hint{单射从相同输出推相同输入；满射任取目标值并解出原像；双射需两者。}
+\block{Composition（复合）}：$g:A\to B,f:B\to C$，
+\eq{(f\circ g)(x)=f(g(x)),\quad \iota_A(x)=x.}
+若 $f:A\to B$ 双射，$f^{-1}\circ f=\iota_A$，$f\circ f^{-1}=\iota_B$。
+$f\circ g$ 与 $g\circ f$ 一般不同，后者可能无定义。
+\eq{\begin{aligned}
+(f_1+f_2)(x)&=f_1(x)+f_2(x),\\
+(f_1f_2)(x)&=f_1(x)f_2(x).
+\end{aligned}}
+\block{Floor（下取整）}/\b{Ceiling（上取整）}，$n\in\Z$：
+\eq{\begin{aligned}
+\lfloor x\rfloor=n&\iff n\le x<n+1\iff x-1<n\le x,\\
+\lceil x\rceil=n&\iff n-1<x\le n\iff x\le n<x+1,\\
+x-1&<\lfloor x\rfloor\le x\le\lceil x\rceil<x+1,\\
+\lfloor-x\rfloor&=-\lceil x\rceil,\quad\lceil-x\rceil=-\lfloor x\rfloor,\\
+\lfloor x+n\rfloor&=\lfloor x\rfloor+n,\quad\lceil x+n\rceil=\lceil x\rceil+n,\\
+\lfloor2x\rfloor&=\lfloor x\rfloor+\lfloor x+\tfrac12\rfloor.
+\end{aligned}}
+\hint{\b{取整恒等式}：证 $\lfloor u\rfloor=m$，先确认 $m\in\Z$，再证 $m\le u<m+1$；证 $\lceil u\rceil=m$ 则证 $m-1<u\le m$。
+\block{倍数公式}：写 $x=k+r$，其中 $k=\lfloor x\rfloor\in\Z$，$0\le r<1$（$r$ 为小数部分）。由整数平移不改变小数部分，得
+\eq{\begin{aligned}
+\lfloor2x\rfloor&=2k+\lfloor2r\rfloor,\\
+\lfloor x\rfloor+\lfloor x+\tfrac12\rfloor
+&=2k+\lfloor r+\tfrac12\rfloor.
+\end{aligned}}
+若 $0\le r<1/2$，$\lfloor2r\rfloor=\lfloor r+1/2\rfloor=0$；若 $1/2\le r<1$，两者均为 $1$。两种情况穷尽，故左右相等。}
+\h{6\quad Sequences（数列）与 Summations（求和）}
+\block{Arithmetic 等差；Geometric 等比}
+
+\eq{\begin{aligned}
+\sum_{k=1}^n k^2&=\frac{n(n+1)(2n+1)}6,\\
+\sum_{k=1}^n k^3&={\left[\frac{n(n+1)}2\right]}^2,\\
+\sum_{k=0}^\infty x^k&=\frac1{1-x},\quad |x|<1,\\
+\end{aligned}}
+
+\h{7\quad Cardinality（基数）}
+$|A|=|B|\iff$ 存在双射 $A\to B$；$|A|\le|B|\iff$ 存在单射 $A\to B$。
+\block{Schröder\textendash{}Bernstein}：
+\eq{|A|\le|B|\ \land\ |B|\le|A|\Rightarrow|A|=|B|.}
+\block{Countable（可数）}：有限或与 $\Z^+$ 双射。无限时可无遗漏、无重复\b{列成序列}。
+$\N,\Z,\Q$、非空有限字母表上所有有限字符串均可数；$|\N|=|\Z|=|\Q|$。可数集的子集、两个可数集的并仍可数。
+\block{Uncountable（不可数）}：$\R,(0,1),\Pow(\N)$。
+\hint{\b{有理数可数}：每个正有理数可写为 $a/b$，$a,b\in\Z^+$。依次按 $a+b=2,3,4,\ldots$ 列出各组：
+\eq{\tfrac11;\quad\tfrac12,\tfrac21;\quad\tfrac13,\tfrac22,\tfrac31;\quad\ldots}
+每组有限；任意 $a/b$ 都会在第 $a+b$ 组出现。跳过重复值，得正有理数序列 $q_1,q_2,\ldots$；再列 $0,q_1,-q_1,q_2,-q_2,\ldots$，便无遗漏、无重复地列出 $\Q$。
+\block{有限字符串可数}：若字母表有 $s\ge1$ 个字母，长度 $\ell$ 的字符串有 $s^\ell$ 个。按长度 $0,1,2,\ldots$，同长度按固定字母顺序排列；任意有限字符串都会出现。
+\block{区间$(0,1)$ 不可数 / $\R$不可数（对角线法）}：反设可列为 $x_1,x_2,\ldots$，写 $x_i=0.d_{i1}d_{i2}\cdots$。构造 $y=0.b_1b_2\cdots$，令 $b_i=\begin{cases}2,&d_{ii}=1,\\1,&d_{ii}\ne1.\end{cases}$
+则 $y\in(0,1)$，且对每个 $i$，$y$ 的第 $i$ 位与 $x_i$ 不同，故 $y\ne x_i$。$y$ 这与列表包含所有实数矛盾。又因 $(0,1)\subseteq\R$，$\R$ 也不可数。
+\block{$\Pow(\N)$ 不可数}：反设所有子集可列为 $S_1,S_2,\ldots$。取 $T=\{i\in\Z^+:i\notin S_i\}\subseteq\N$；对每个 $i$，$T$ 与 $S_i$ 对元素 $i$ 的归属恰好相反，故 $T\ne S_i$，矛盾。}
+\h{8\quad Growth（增长）与 Complexity（复杂度）}
+下列常数均为正，不等式须对所有 $n>k$ 成立：
+\eq{\begin{aligned}
+f=O(g)&\iff\exists c,k:\ |f(n)|\le c|g(n)|,\\
+f=\Omega(g)&\iff\exists c,k:\ |f(n)|\ge c|g(n)|\\&\iff g=O(f),\\
+f=\Theta(g)&\iff\exists c_1,c_2,k:\\&\qquad c_1|g(n)|\le|f(n)|\le c_2|g(n)|\\&\iff f=O(g)\land f=\Omega(g).
+\end{aligned}}
+若 $f_i=O(g_i)$，则
+\eq{\begin{aligned}f_1+f_2&=O(\max\{|g_1|,|g_2|\}),\\f_1f_2&=O(g_1g_2).
+\end{aligned}}
+固定参数，$a,b>1$ 为对数底数时：
+\eq{\begin{aligned}
+a_{d}n^d+\cdots+a_0&=\Theta(n^d)\quad(a_d\ne0),\\
+\log_a n&=\frac{\log_b n}{\log_b a}=\Theta(\log_b n),\\
+\log n&=O(n),\quad n!=O(n^n),\\
+n^a&=O(n^b)\quad(0\le a\le b),\\
+n^a&=O(2^n)\quad(a\ge0),\\
+\log(n!)&=O(n\log n).
+\end{aligned}}
+增长从慢到快：$1,\log n,n,n\log n,n^2,n^3,2^n,n!,n^n$。
+\hint{上界取足够大的常数与阈值；多项式各项用最高次项控制；$\log(n!)=\sum\log k\le n\log n$。}
+单层固定工作循环 $\Theta(n)$；双层各 $n$ 次 $\Theta(n^2)$；三角循环 $\sum_{i=1}^n i=\Theta(n^2)$。
+\block{Horner（霍纳）}：
+\eq{p(x)=a_0+x\bigl(a_1+x(\cdots+x(a_{n-1}+xa_n))\bigr).}
+$n$ 次乘法、$n$ 次加法，单位代价下 $\Theta(n)$。
+\block{Insertion sort（插入排序）}，只计元素比较：已升序最好 $n-1=\Theta(n)$；互异逆序最坏 $\sum_{j=1}^{n-1}j=n(n-1)/2=\Theta(n^2)$；互异元素的排列等概率时平均 $\Theta(n^2)$。
+\block{Input size（输入规模）}：正整数 $N$ 的位长
+\eq{s=\lfloor\log_2N\rfloor+1=\lceil\log_2(N+1)\rceil,\ N\approx2^s}
+$\Theta(N)$ 步对应位长 $s$ 为 $\Theta(2^s)$；$n$ 个 $m$ 位整数的规模为 $nm$。注意区分“算术运算次数”与“位运算次数”。
+\block{Same type（同类型）}（课件定义，常数全正）：
+\eq{c_1{[g(n^{a_1})]}^{b_1}\le f(n)\le c_2{[g(n^{a_2})]}^{b_2}.}
+\block{P}：可多项式时间求解的判定问题；
+\block{NP}：答案为“是”的输入，存在长度受输入规模的多项式限制的\b{证书（certificate）}，可在多项式时间内验证；答案为“否”时，没有证书能通过验证。
+\block{Polynomial-time reduction（多项式时间归约）}：$K\le_{p}H$ 表示存在多项式时间变换 $r$，将 $K$ 的每个输入 $x$ 转为 $H$ 的输入 $r(x)$，且两者答案相同。因此能快速解 $H$，就能先转换、再调用 $H$ 的算法来快速解 $K$；$H$ 至少和 $K$ 一样难。
+\block{NP-hard（NP 难）}：对任意 $L\in\mathrm{NP}$，均有 $L\le_{p}H$，则称 $H$ 为 NP-hard；即所有 NP 问题都能归约到 $H$。$H$ 不要求属于 NP。
+\eq{\mathrm{P}\subseteq\mathrm{NP},\quad\mathrm{NP\text{-}complete}=\mathrm{NP}\cap\mathrm{NP\text{-}hard}.}
+\block{证明步骤}：证 $H$ 为 NP-hard，选已知 NP-complete 的 $K$，证明 $K\le_{p}H$（把已知难题转成待证问题，方向不能反）；再证 $H\in\mathrm{NP}$，即可得 $H$ 为 NP-complete。任一 NP-complete 问题有多项式算法 $\Rightarrow\mathrm{P}=\mathrm{NP}$。
+
+\h{9\quad Divisibility（整除）与 Congruence（同余）}
+\notebox{数论约定}{默认 $m>0$；谈逆元时 $m>1$；素数恒指大于 $1$ 的正整数。}
+$a\ne0$：$a\mid b\iff\exists k\in\Z:b=ak$。
+\eq{\begin{aligned}
+a\mid b,\ a\mid c&\Rightarrow a\mid(ub+vc)\quad(u,v\in\Z),\\
+a\mid b&\Rightarrow a\mid bc,\\
+a\mid b,\ b\mid c&\Rightarrow a\mid c.
+\end{aligned}}
+正整数 $1,\ldots,n$ 中 $d>0$ 的倍数有 $\lfloor n/d\rfloor$ 个。
+\block{Division algorithm（带余除法）}：$a\in\Z,d>0$，唯一
+\eq{\begin{gathered}a=dq+r,\quad 0\le r<d,\\q=a\operatorname{div}d=\lfloor a/d\rfloor,\\r=a\bmod d=a-d\lfloor a/d\rfloor.\end{gathered}}
+\hint{存在取 $q=\lfloor a/d\rfloor$；唯一性由 $d(q-q')=r'-r$ 且 $|r'-r|<d$。负数余数仍非负。}
+\eq{\begin{aligned}
+a\equiv b\pmod m&\iff m\mid(a-b)\\&\iff a=b+km\quad(k\in\Z)\\&\iff a\bmod m=b\bmod m.
+\end{aligned}}
+若 $a\equiv b,c\equiv d\pmod m$，则 $a+c\equiv b+d$，$ac\equiv bd\pmod m$。
+\eq{\begin{aligned}
+(a+b)\bmod m&=((a\bmod m)+(b\bmod m))\!\bmod m,\\
+ab\bmod m&=((a\bmod m)(b\bmod m))\bmod m.
+\end{aligned}}
+\block{模运算}：$\Z_m=\{0,\ldots,m-1\}$，$a+_{m}b=(a+b)\bmod m$，$a\cdot_{m}b=ab\bmod m$；封闭、结合、交换、分配。加法单位元 $0$，乘法单位元 $1\bmod m$，加法逆元 $(-a)\bmod m$。
+一般不能约去公因子；当 $\gcd(c,m)=1$ 时，
+\eq{ca\equiv cb\pmod m\Rightarrow a\equiv b\pmod m.}
+\hint{$m\mid c(a-b)$，由互素整除性质约去 $c$。}
+
+\h{10\quad Integer Algorithms（整数算法）}
+\block{Base-$b$ expansion（进制展开）}，$b\ge2,N>0$：
+\eq{N={(a_k\cdots a_0)}_b=\sum_{i=0}^k a_{i}b^i,\quad0\le a_i<b,\ a_k\ne0.}
+位数 $k+1=\lfloor\log_{b}N\rfloor+1$；$N_0=N$，迭代 $a_i=N_i\bmod b$，$N_{i+1}=N_i\operatorname{div}b$，余数从低位向高位。二/八进制每 $3$ 位一组；二/十六进制每 $4$ 位一组；$A,\ldots,F=10,\ldots,15$。
+\block{Binary addition（二进制加法）}：$n$ 位，$c_0=0$，
+\eq{t_j=a_j+b_j+c_j,\ s_j=t_j\bmod2,\ c_{j+1}=\lfloor t_j/2\rfloor.}
+最高位 $s_n=c_n$；$O(n)$ 位运算。
+\block{Binary multiplication（二进制乘法）}：
+\eq{ab=\sum_{j=0}^{n-1}b_j(a2^j),\quad O(n^2)\text{ 位运算}.}
+\block{Repeated subtraction（逐次减法除法）}：通过每次减掉除数来计算 $q=a \operatorname{div} d$ 和 $r=a\bmod d$。需要 $O(q \log a)$ 位运算；常规长除法更高效，位运算次数 $O(n^2)$, where $n=\max (\log a, \log d)$。
+\block{Binary modular exponentiation（二进制模幂）：反复平方法}，$n\ge0$。
+求 $b^n\bmod m$：反复平方得到$b$, $b^2$, $b^4$, $b^8,\ldots$；按 $n$ 的二进制位，只乘位为 $1$ 对应的幂；每次乘法、平方后都取模。
+\b{例：求 $3^{13}\bmod11$。}先拆指数：$13=(1101)_2=8+4+1$。再连续平方、取模：
+\eq{\begin{aligned}3^2&\equiv9\pmod{11},\\3^4&\equiv9^2=81\equiv4\pmod{11},\\3^8&\equiv4^2=16\equiv5\pmod{11}.\end{aligned}}
+只乘指数为 $8,4,1$ 的三项（跳过 $3^2$）：
+\eq{\begin{aligned}3^{13}&=3^8\cdot3^4\cdot3,\\3^{13}\bmod11&=(5\cdot4\cdot3)\bmod11=5.\end{aligned}}
+$n=0$ 时结果为 $1\bmod m$。
+初始约简后：$O(\log n)$ 次模乘；朴素位复杂度 $O({(\log m)}^2\log n)$（$n\ge1,m>1$）。
+\h{11\quad Primes（素数）}
+\block{Prime（素数）} $p>1$：正因数仅 $1,p$。大于 $1$ 而非素数为 \b{Composite（合数）}；$1$ 两者皆非。
+\block{Fundamental theorem of arithmetic（算术基本定理）}：每个 $n>1$ 有唯一素因子分解（忽略顺序）。
+\hint{存在：不断分解合数。唯一：设 $n=p_1\cdots p_r=q_1\cdots q_s$，各因子均为素数。由欧几里得引理，$p_1$ 必整除某个 $q_j$；两者为素数，故 $p_1=q_j$。约去后重复配对；两边必同时约完，否则剩余素数的乘积等于 $1$，矛盾。因此两组因子仅顺序不同。}
+\block{试除判素}：合数 $n$ 必有素因数 $p\le\sqrt n$。
+\hint{$n=ab$，不可能 $a,b$ 都 $>\sqrt n$；较小因子的素因数满足上界。}
+\block{素数无穷}。\hint{若仅 $p_1,\ldots,p_k$，令 $Q=p_1\cdots p_k+1$；由于 $Q>1$，$Q$至少有一个素因数$q$（$q$可能等于$Q$）。$\forall i,\, Q \mod p_i=1$，故 $q\ne p_i$，也就是素数$q$未被列出，矛盾。}
+\h{12\quad GCD（最大公因数）与 Bézout（贝祖）}
+$a,b\in\Z$ 不全为 $0$；$\gcd(a,b)$ 为最大正公因数；$\gcd(a,0)=|a|$（$a\ne0$）。
+\block{Relatively prime（互素）}：$\gcd(a,b)=1$。\\
+$a,b>0$，写为 $a=\prod p_i^{\alpha_i},b=\prod p_i^{\beta_i}$（补零指数），
+\eq{\begin{aligned}
+\gcd(a,b)&=\prod_i p_i^{\min(\alpha_i,\beta_i)},\\
+\operatorname{lcm}(a,b)&=\prod_i p_i^{\max(\alpha_i,\beta_i)},\end{aligned}}
+\eq{\boxed{
+\gcd(a,b)\operatorname{lcm}(a,b)=ab.}
+}
+\block{LCM（最小公倍数）}：同时被 $a,b$ 整除的最小正整数。
+
+\block{Euclidean algorithm（欧几里得算法）}：
+\eq{a=bq+r\Rightarrow\gcd(a,b)=\gcd(b,r).}
+\hint{若 $d\mid a,b$ 则 $d\mid a-bq=r$；若 $d\mid b,r$ 则 $d\mid bq+r=a$。\b{公因数完全相同}，故 GCD 相同。}
+令 $(x,y)=(|a|,|b|)$，当 $y\ne0$ 迭代 $(x,y)\leftarrow(y,x\bmod y)$；最后输出 $x$，即最后非零余数。若 $a\ge b>0$，需 $O(\log b)$ 次除法。
+\hint{余数严格下降保证终止；每两轮较小数至少减半，故除法次数为对数级（不是位复杂度）。}
+\block{Bézout's identity（贝祖等式）}：
+\eq{d=\gcd(a,b)=sa+tb,\quad s,t\in\Z.}
+\block{Extended Euclid（扩展欧几里得）}：逐步回代余数求 $s,t$；
+\block{互素整除引理}：$\gcd(a,b)=1,\ a\mid bc\Rightarrow a\mid c$。
+\hint{$1=sa+tb$，乘 $c$ 得 $c=sac+tbc$，两项都被 $a$ 整除。}
+\block{Euclid's lemma（素数整除引理）}：素数 $p\mid a_1\cdots a_n\Rightarrow p\mid a_i$（某个 $i$）。
+\hint{若 $p\nmid a_1$ 则 $\gcd(p,a_1)=1$，约去 $a_1$ 并反复使用互素整除引理。}
+\h{13\quad Linear Congruences（线性同余）}
+\block{Modular inverse（模逆元）}：$a^{-1}a\equiv1\pmod m$。
+\eq{a^{-1}\text{ 存在}\iff\gcd(a,m)=1\quad(m>1).}
+逆元模 $m$ 唯一；若 $sa+tm=1$，则 $\boxed{a^{-1}\equiv s\pmod m}$。
+\hint{存在用 Bézout。必要性：若逆元 $x$ 存在，则 $ax\equiv1\pmod m$，即 $ax-km=1$（$k\in\Z$）。令 $d=\gcd(a,m)$，因 $d\mid a$ 且 $d\mid m$，故 $d\mid(ax-km)=1$；正整数 $d$ 只能为 $1$，所以 $a,m$ 互素。唯一性由 $ab\equiv ac\equiv1$ 约去 $a$。}
+\block{解 $ax\equiv b\pmod m$}：令 $d=\gcd(a,m)$。
+\eq{\text{有解}\iff d\mid b.}
+若 $d\mid b$，令 $a'=a/d,b'=b/d,m'=m/d$，
+\eq{\begin{gathered}x_0\equiv{(a')}^{-1}b'\pmod {m'},\\
+x\equiv x_0+km'\pmod m,\quad k=0,\ldots,d-1.
+\end{gathered}}
+模 $m$ 恰 $d$ 个解类；$m'=1$ 时所有整数均满足，取 $x_0=0$。$d=1$ 时直接 $x\equiv a^{-1}b\pmod m$。
+\hint{必要：$ax-km=b$；充分：$d=sa+tm$ 乘 $b/d$ 构造解。两解之差满足 $m'\mid a'(x-x_0)$，互素约去 $a'$，得到所有解。}
+\h{14\quad CRT（中国剩余定理）}
+$m_i>1$ 两两互素，$M=\prod_i m_i$。\\方程组 $x\equiv a_i\pmod{m_i}$ 有唯一模 $M$ 的解。\\
+\block{解法一 (CRT)：}令 $M_i=M/m_i,\, y_i\equiv M_i^{-1}\pmod{m_i}$,
+\eq{\boxed{x\equiv\sum_{i} a_{i}M_{i}y_i\pmod M}.}
+\hint{对模 $m_i$，除第 $i$ 项外都为 $0$，该项为 $a_i$。两解之差被每个 $m_i$ 整除，互素使乘积 $M$ 也整除差，故唯一。}
+\block{解法二 (回代)}：由首式写 $x=a_1+m_1t$，代入下一式解 $t$，逐式合并。
+\block{非互素模数}：系统可解 $\iff$ 对任意 $i,j$ 有
+\eq{a_i\equiv a_j\pmod{\gcd(m_i,m_j)}.}
+有解则唯一模 $\operatorname{lcm}(m_1,\ldots,m_n)$。求解有两种方法，(1) 回代法逐行算，(2) 对模进行\b{素数幂}拆分 (例如：$a \equiv2 \pmod {12} \iff a\equiv2 \pmod 4 \land a \equiv 2 \pmod 3$). 只拆到素数的幂，不要进一步拆下去，例如这里的4不应继续分解为2.
+
+% --- MARK --- Plz continue the above. 非互素模的方程组的解法
+
+\h{15\quad Modular Applications（模运算应用）}
+\block{LCG（线性同余伪随机生成）}：给定模数 $m$、乘数 $a$、增量 $c$、种子 $x_0$，
+\eq{x_{n+1}=(ax_n+c)\bmod m,\quad0\le x_n<m.}
+\block{Hash function（哈希函数）}：任意长度映射为固定长度；表地址常用 $h(k)=k\bmod m$。
+\block{Collision（冲突）}：不同键同地址；
+\block{Linear probing（线性探测）}：依次试 $(h(k)+j)\bmod m$，$j=0,1,\ldots$，直到空位。
+\h{16\quad Cryptography（密码学）}
+\block{Encryption（加密）}：明文 $\to$ 密文；
+\block{Decryption（解密）}：密文 $\to$ 明文。
+\block{Cryptanalysis（密码分析）}：无密钥恢复明文。
+字母编号 $A=0,\ldots,Z=25$。
+\block{Shift/Caesar cipher（移位/凯撒密码）}：
+\eq{C=(P+k)\bmod26,\quad P=(C-k)\bmod26.}
+\block{Affine cipher（仿射密码）}，$\gcd(a,26)=1$：
+\eq{C=(aP+b)\bmod26,\quad P=a^{-1}(C-b)\bmod26.}
+\hint{移项后乘模逆元。移位密码可穷举 $26$ 个密钥或用字母频率分析。}
+\block{Private/symmetric key（私钥/对称密钥）}：双方共享秘密密钥；须安全交换。
+\block{Public key（公钥）}：公钥公开用于加密，私钥保密用于解密。
+\block{Fermat's little theorem（费马小定理）}：$p$ 素数，
+\eq{p\nmid a\Rightarrow a^{p-1}\equiv1\pmod p,\quad a^p\equiv a\pmod p.}
+后一式对所有整数 $a$ 成立。
+\hint{乘以非零剩余类 $a$ 会置换 $1,\ldots,p-1$；各项相乘并约去 ${(p-1)!}$。$p\mid a$ 时后一式显然。}
+\block{RSA cryptosystem（RSA 密码系统，课件模型）}：取不同素数 $p,q$，$n=pq$，$\phi=(p-1)(q-1)$。
+\eq{\gcd(e,\phi)=1,\quad d\equiv e^{-1}\pmod\phi,\quad e,d>0.}
+公钥 $(n,e)$；私钥 $d$；$p,q$ 保密。消息分块满足 $0\le M<n$（字母转数字时保留前导零与块宽）。
+\eq{\boxed{C=M^e\bmod n,\qquad M=C^d\bmod n}.}
+\hint{$ed=1+k(p-1)(q-1)$。模 $p$，若 $p\nmid M$ 用费马得 $M^{ed}\equiv M$；若 $p\mid M$ 两边均 $0$。模 $q$ 同理，再由 CRT 得模 $pq$ 相等，覆盖所有消息块。}
+\block{RSA digital signature（数字签名，课件模型）}：
+\eq{S=M^d\bmod n,\qquad S^e\bmod n=M.}
+私钥签名，公钥验证；签名用于确认消息来源。
+\block{Primitive root（原根）}：模素数 $p$ 的 $r$，其幂遍历全部非零剩余类，即
+\eq{\{r^j\bmod p:0\le j<p-1\}=\{1,\ldots,p-1\}.}
+\block{Diffie\textendash{}Hellman（密钥交换）}：公开素数 $p$、原根 $g$；Alice 秘选 $u$ 发 $A=g^u\bmod p$；Bob 秘选 $v$ 发 $B=g^v\bmod p$。
+\eq{\boxed{K=B^u\bmod p=A^v\bmod p=g^{uv}\bmod p}.}
+公开 $p,g,A,B$；保密 $u,v,K$。\hint{幂的乘法法则给出同一共享值。}
+\h{17\quad Blockchain（区块链）}
+分布式账本；区块头包含前一区块的哈希，串联记录。
+\block{Merkle root（默克尔根）}：交易哈希逐层合并得到的摘要。
+\block{PoW（工作量证明）}：寻找 nonce 使
+\eq{\operatorname{SHA256}(\text{header with nonce})<\text{target}.}
+目标越小，挖矿越难。
+\block{篡改链}：改交易 $\Rightarrow$ 根变化 $\Rightarrow$ 区块头哈希变化 $\Rightarrow$ 后继链接失效，须重做后续工作量。
+\block{ECDSA（椭圆曲线数字签名）}：用私钥签名以授权花费输出；公钥验证。
+\h{18\quad Prime Extras（素数补充）}
+\block{Mersenne prime（梅森素数）}：$M_p=2^p-1$ 为素数时，$p$ 必为素数；反之未必，如 $2^{11}-1=23\cdot89$。$2^5-1=31$。
+\hint{$p=ab$ 合数时 $2^{ab}-1$ 被 $2^a-1$ 整除。}
+\block{Lucas\textendash{}Lehmer（卢卡斯--莱默检验）}：奇素数 $p$，$s_0=4$，$s_{i+1}=(s_i^2-2)\bmod M_p$；$M_p$ 为素数 $\iff s_{p-2}=0$。$p=2$ 单独得 $M_2=3$。
+\block{阶乘末尾零}：
+\eq{v_5(n!)=\sum_{j\ge1}\left\lfloor\frac{n}{5^j}\right\rfloor.}
+\hint{数因子 $5$ 的总数；$5^j$ 的倍数各额外贡献一次，因子 $2$ 足够。}
+\block{Goldbach（哥德巴赫）猜想}：每个 $>2$ 的偶数为两素数之和。
+\block{Twin-prime（孪生素数）猜想}：相差 $2$ 的素数对无穷多；两者为猜想。
+\end{sheetcolumns}
+\end{document}
