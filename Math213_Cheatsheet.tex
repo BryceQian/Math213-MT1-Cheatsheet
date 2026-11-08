@@ -1,7 +1,8 @@
 % !TeX program = xelatex
 % Compile: latexmk -xelatex -synctex=1 -outdir=build Math213_Cheatsheet.tex
 % A4 portrait, two pages: print duplex, flip on long edge, actual size (100%).
-% Source: Math213_Cheatsheet_Draft.md and local Lecture 8--9 slides.
+% Source: Math213_Cheatsheet_Draft.md and local Lecture 0--9 slides.
+% Notation checked against local lecture slides; slide numbers below are printed slide numbers.
 \documentclass[a4paper,twoside,fontset=none]{ctexart}
 \usepackage[top=7mm,bottom=11mm,left=7mm,right=7mm,footskip=6mm]{geometry}
 \usepackage{amsmath,amssymb,mathtools,newtxmath}
@@ -125,11 +126,12 @@ Resolution（归结）&$p\lor q,\neg p\lor r\vdash q\lor r$
 \block{Vacuous proof（空真证明）}：$p=F$；
 \block{Trivial proof（平凡证明）}：$q=T$。
 \h{4\quad Sets（集合）与 Set Operations（运算）}
+% Lecture 4, slides 13,26: proper subset uses \subset; set difference uses minus.
 $\Z=\{\ldots,-1,0,1,\ldots\}$（整数集）；$\Q=\{p/q:p,q\in\Z,q\ne0\}$（有理数集）；\\
 $\R$ 实数，$\mathbb{C}$ 复数。
 \eq{\begin{aligned}
 A\subseteq B&\iff\forall x(x\in A\to x\in B),\\
-A\subsetneq B&\iff A\subseteq B\land A\ne B,\\
+A\subset B&\iff A\subseteq B\land A\ne B,\\
 A=B&\iff A\subseteq B\land B\subseteq A\\
 &\iff\forall x(x\in A\leftrightarrow x\in B),\\
 \Pow(A)&=\{S:S\subseteq A\},\quad |\Pow(A)|=2^{|A|},\\
@@ -141,7 +143,7 @@ A\times B&=\{(a,b):a\in A,b\in B\},\\
 \eq{\begin{aligned}
 A\cup B&=\{x:x\in A\lor x\in B\},\\
 A\cap B&=\{x:x\in A\land x\in B\},\\
-A\setminus B&=A\cap\bar B,\quad\bar A=U\setminus A,\\
+A-B&=A\cap\bar B,\quad\bar A=U-A,\\
 x\in\bigcup_{i=1}^n A_i&\iff\exists i\in\{1,\ldots,n\}:x\in A_i,\\
 x\in\bigcap_{i=1}^n A_i&\iff\forall i\in\{1,\ldots,n\}:x\in A_i.
 \end{aligned}}
@@ -196,20 +198,21 @@ x-1&<\lfloor x\rfloor\le x\le\lceil x\rceil<x+1,\\
 \lfloor2x\rfloor&=\lfloor x\rfloor+\lfloor x+\tfrac12\rfloor.
 \end{aligned}}
 \hint{\b{取整恒等式}：证 $\lfloor u\rfloor=m$，先确认 $m\in\Z$，再证 $m\le u<m+1$；证 $\lceil u\rceil=m$ 则证 $m-1<u\le m$。
-\block{倍数公式}：写 $x=k+r$，其中 $k=\lfloor x\rfloor\in\Z$，$0\le r<1$（$r$ 为小数部分）。由整数平移不改变小数部分，得
+% Lecture 5, slide 14: integer part n, fractional part epsilon.
+\block{倍数公式}：写 $x=n+\epsilon$，$n=\lfloor x\rfloor\in\Z$，$0\le\epsilon<1$。由整数平移不改变小数部分，得
 \eq{\begin{aligned}
-\lfloor2x\rfloor&=2k+\lfloor2r\rfloor,\\
+\lfloor2x\rfloor&=2n+\lfloor2\epsilon\rfloor,\\
 \lfloor x\rfloor+\lfloor x+\tfrac12\rfloor
-&=2k+\lfloor r+\tfrac12\rfloor.
+&=2n+\lfloor\epsilon+\tfrac12\rfloor.
 \end{aligned}}
-若 $0\le r<1/2$，$\lfloor2r\rfloor=\lfloor r+1/2\rfloor=0$；若 $1/2\le r<1$，两者均为 $1$。两种情况穷尽，故左右相等。}
+若 $0\le\epsilon<1/2$，$\lfloor2\epsilon\rfloor=\lfloor\epsilon+1/2\rfloor=0$；若 $1/2\le\epsilon<1$，两者均为 $1$。两种情况穷尽，故左右相等。}
 \h{6\quad Sequences（数列）与 Summations（求和）}
 \block{Arithmetic 等差；Geometric 等比}
 
 \eq{\begin{aligned}
 \sum_{k=1}^n k^2&=\frac{n(n+1)(2n+1)}6,\\
 \sum_{k=1}^n k^3&={\left[\frac{n(n+1)}2\right]}^2,\\
-\sum_{k=0}^\infty x^k&=\frac1{1-x},\quad |x|<1,\\
+\sum_{k=0}^\infty x^k&=\frac1{1-x},\quad |x|<1.
 \end{aligned}}
 
 \h{7\quad Cardinality（基数）}
@@ -223,22 +226,24 @@ $\N,\Z,\Q$、非空有限字母表上所有有限字符串均可数；$|\N|=|\Z|
 \eq{\tfrac11;\quad\tfrac12,\tfrac21;\quad\tfrac13,\tfrac22,\tfrac31;\quad\ldots}
 每组有限；任意 $a/b$ 都会在第 $a+b$ 组出现。跳过重复值，得正有理数序列 $q_1,q_2,\ldots$；再列 $0,q_1,-q_1,q_2,-q_2,\ldots$，便无遗漏、无重复地列出 $\Q$。
 \block{有限字符串可数}：若字母表有 $s\ge1$ 个字母，长度 $\ell$ 的字符串有 $s^\ell$ 个。按长度 $0,1,2,\ldots$，同长度按固定字母顺序排列；任意有限字符串都会出现。
-\block{区间$(0,1)$ 不可数 / $\R$不可数（对角线法）}：反设可列为 $x_1,x_2,\ldots$，写 $x_i=0.d_{i1}d_{i2}\cdots$。构造 $y=0.b_1b_2\cdots$，令 $b_i=\begin{cases}2,&d_{ii}=1,\\1,&d_{ii}\ne1.\end{cases}$
-则 $y\in(0,1)$，且对每个 $i$，$y$ 的第 $i$ 位与 $x_i$ 不同，故 $y\ne x_i$。$y$ 这与列表包含所有实数矛盾。又因 $(0,1)\subseteq\R$，$\R$ 也不可数。
-\block{$\Pow(\N)$ 不可数}：反设所有子集可列为 $S_1,S_2,\ldots$。取 $T=\{i\in\Z^+:i\notin S_i\}\subseteq\N$；对每个 $i$，$T$ 与 $S_i$ 对元素 $i$ 的归属恰好相反，故 $T\ne S_i$，矛盾。}
+% Lecture 5, slide 40; Lecture 6, slides 3--4: r_i, r, d_i; S_0,S_1,... and R.
+\block{区间$(0,1)$ 不可数 / $\R$不可数（对角线法）}：反设可列为 $r_1,r_2,\ldots$，写 $r_i=0.d_{i1}d_{i2}\cdots$。构造 $r=0.d_1d_2\cdots$，令 $d_i=\begin{cases}2,&d_{ii}\ne2,\\3,&d_{ii}=2.\end{cases}$
+则 $r\in(0,1)$，且对每个 $i$，$r$ 的第 $i$ 位与 $r_i$ 不同，故 $r\ne r_i$。这与列表包含所有实数矛盾。又因 $(0,1)\subseteq\R$，$\R$ 也不可数。
+\block{$\Pow(\N)$ 不可数}：反设所有子集可列为 $S_0,S_1,\ldots$。取 $R=\{i\in\N:i\notin S_i\}$；对每个 $i$，$R$ 与 $S_i$ 对元素 $i$ 的归属恰好相反，故 $R\ne S_i$，矛盾。}
 \h{8\quad Growth（增长）与 Complexity（复杂度）}
-下列常数均为正，不等式须对所有 $n>k$ 成立：
+% Lecture 6, slides 9,17--19: argument x, witnesses C,k; polynomial degree n.
+下列常数均为正，不等式须对所有 $x>k$ 成立：
 \eq{\begin{aligned}
-f=O(g)&\iff\exists c,k:\ |f(n)|\le c|g(n)|,\\
-f=\Omega(g)&\iff\exists c,k:\ |f(n)|\ge c|g(n)|\\&\iff g=O(f),\\
-f=\Theta(g)&\iff\exists c_1,c_2,k:\\&\qquad c_1|g(n)|\le|f(n)|\le c_2|g(n)|\\&\iff f=O(g)\land f=\Omega(g).
+f=O(g)&\iff\exists C,k:\ |f(x)|\le C|g(x)|,\\
+f=\Omega(g)&\iff\exists C,k:\ |f(x)|\ge C|g(x)|\\&\iff g=O(f),\\
+f=\Theta(g)&\iff\exists C_1,C_2,k:\\&\qquad C_1|g(x)|\le|f(x)|\le C_2|g(x)|\\&\iff f=O(g)\land f=\Omega(g).
 \end{aligned}}
 若 $f_i=O(g_i)$，则
 \eq{\begin{aligned}f_1+f_2&=O(\max\{|g_1|,|g_2|\}),\\f_1f_2&=O(g_1g_2).
 \end{aligned}}
 固定参数，$a,b>1$ 为对数底数时：
 \eq{\begin{aligned}
-a_{d}n^d+\cdots+a_0&=\Theta(n^d)\quad(a_d\ne0),\\
+a_{n}x^n+\cdots+a_0&=\Theta(x^n)\quad(a_n\ne0),\\
 \log_a n&=\frac{\log_b n}{\log_b a}=\Theta(\log_b n),\\
 \log n&=O(n),\quad n!=O(n^n),\\
 n^a&=O(n^b)\quad(0\le a\le b),\\
@@ -249,12 +254,12 @@ n^a&=O(2^n)\quad(a\ge0),\\
 \hint{上界取足够大的常数与阈值；多项式各项用最高次项控制；$\log(n!)=\sum\log k\le n\log n$。}
 单层固定工作循环 $\Theta(n)$；双层各 $n$ 次 $\Theta(n^2)$；三角循环 $\sum_{i=1}^n i=\Theta(n^2)$。
 \block{Horner（霍纳）}：
-\eq{p(x)=a_0+x\bigl(a_1+x(\cdots+x(a_{n-1}+xa_n))\bigr).}
+\eq{f(x)=a_0+x\bigl(a_1+x(\cdots+x(a_{n-1}+xa_n))\bigr).}
 $n$ 次乘法、$n$ 次加法，单位代价下 $\Theta(n)$。
 \block{Insertion sort（插入排序）}，只计元素比较：已升序最好 $n-1=\Theta(n)$；互异逆序最坏 $\sum_{j=1}^{n-1}j=n(n-1)/2=\Theta(n^2)$；互异元素的排列等概率时平均 $\Theta(n^2)$。
-\block{Input size（输入规模）}：正整数 $N$ 的位长
-\eq{s=\lfloor\log_2N\rfloor+1=\lceil\log_2(N+1)\rceil,\ N\approx2^s}
-$\Theta(N)$ 步对应位长 $s$ 为 $\Theta(2^s)$；$n$ 个 $m$ 位整数的规模为 $nm$。注意区分“算术运算次数”与“位运算次数”。
+\block{Input size（输入规模）}：正整数 $n$ 的位长\par\nopagebreak
+\eq{s=\lfloor\log_2n\rfloor+1=\lceil\log_2(n+1)\rceil,\ n\approx2^s}
+$\Theta(n)$ 步对应位长 $s$ 为 $\Theta(2^s)$；$n$ 个 $m$ 位整数的规模为 $nm$。注意区分“算术运算次数”与“位运算次数”。
 \block{Same type（同类型）}（课件定义，常数全正）：
 \eq{c_1{[g(n^{a_1})]}^{b_1}\le f(n)\le c_2{[g(n^{a_2})]}^{b_2}.}
 \block{P}：可多项式时间求解的判定问题；
@@ -266,9 +271,9 @@ $\Theta(N)$ 步对应位长 $s$ 为 $\Theta(2^s)$；$n$ 个 $m$ 位整数的规�
 
 \h{9\quad Divisibility（整除）与 Congruence（同余）}
 \notebox{数论约定}{默认 $m>0$；谈逆元时 $m>1$；素数恒指大于 $1$ 的正整数。}
-$a\ne0$：$a\mid b\iff\exists k\in\Z:b=ak$。
+$a\ne0$：$a\mid b\iff\exists c\in\Z:b=ac$。
 \eq{\begin{aligned}
-a\mid b,\ a\mid c&\Rightarrow a\mid(ub+vc)\quad(u,v\in\Z),\\
+a\mid b,\ a\mid c&\Rightarrow a\mid(mb+nc)\quad(m,n\in\Z),\\
 a\mid b&\Rightarrow a\mid bc,\\
 a\mid b,\ b\mid c&\Rightarrow a\mid c.
 \end{aligned}}
@@ -290,12 +295,13 @@ ab\bmod m&=((a\bmod m)(b\bmod m))\bmod m.
 \hint{$m\mid c(a-b)$，由互素整除性质约去 $c$。}
 
 \h{10\quad Integer Algorithms（整数算法）}
-\block{Base-$b$ expansion（进制展开）}，$b\ge2,N>0$：
-\eq{N={(a_k\cdots a_0)}_b=\sum_{i=0}^k a_{i}b^i,\quad0\le a_i<b,\ a_k\ne0.}
-位数 $k+1=\lfloor\log_{b}N\rfloor+1$；$N_0=N$，迭代 $a_i=N_i\bmod b$，$N_{i+1}=N_i\operatorname{div}b$，余数从低位向高位。二/八进制每 $3$ 位一组；二/十六进制每 $4$ 位一组；$A,\ldots,F=10,\ldots,15$。
-\block{Binary addition（二进制加法）}：$n$ 位，$c_0=0$，
-\eq{t_j=a_j+b_j+c_j,\ s_j=t_j\bmod2,\ c_{j+1}=\lfloor t_j/2\rfloor.}
-最高位 $s_n=c_n$；$O(n)$ 位运算。
+% Lecture 7, slides 18,20; Lecture 8, slides 5,9: n, q_i; carry c, next carry d.
+\block{Base-$b$ expansion（进制展开）}，$b\ge2,n>0$：
+\eq{n={(a_k\cdots a_0)}_b=\sum_{i=0}^k a_{i}b^i,\quad0\le a_i<b,\ a_k\ne0.}
+位数 $k+1=\lfloor\log_{b}n\rfloor+1$；先写 $n=bq_0+a_0$，再迭代 $q_{i-1}=bq_i+a_i$（$i\ge1$），直到商为 $0$；余数从低位向高位。二/八进制每 $3$ 位一组；二/十六进制每 $4$ 位一组；$A,\ldots,F=10,\ldots,15$。
+\block{Binary addition（二进制加法）}：$n$ 位，初始 $c=0$；从低位起计算
+\eq{d=\lfloor(a_j+b_j+c)/2\rfloor,\ s_j=a_j+b_j+c-2d,\ c\leftarrow d.}
+最高位 $s_n=c$；$O(n)$ 位运算。
 \block{Binary multiplication（二进制乘法）}：
 \eq{ab=\sum_{j=0}^{n-1}b_j(a2^j),\quad O(n^2)\text{ 位运算}.}
 \block{Repeated subtraction（逐次减法除法）}：通过每次减掉除数来计算 $q=a \operatorname{div} d$ 和 $r=a\bmod d$。需要 $O(q \log a)$ 位运算；常规长除法更高效，位运算次数 $O(n^2)$, where $n=\max (\log a, \log d)$。
@@ -310,17 +316,18 @@ $n=0$ 时结果为 $1\bmod m$。
 \h{11\quad Primes（素数）}
 \block{Prime（素数）} $p>1$：正因数仅 $1,p$。大于 $1$ 而非素数为 \b{Composite（合数）}；$1$ 两者皆非。
 \block{Fundamental theorem of arithmetic（算术基本定理）}：每个 $n>1$ 有唯一素因子分解（忽略顺序）。
-\hint{存在：不断分解合数。唯一：设 $n=p_1\cdots p_r=q_1\cdots q_s$，各因子均为素数。由欧几里得引理，$p_1$ 必整除某个 $q_j$；两者为素数，故 $p_1=q_j$。约去后重复配对；两边必同时约完，否则剩余素数的乘积等于 $1$，矛盾。因此两组因子仅顺序不同。}
+\hint{存在：不断分解合数。唯一：设 $n=p_1\cdots p_s=q_1\cdots q_t$，各因子均为素数。由欧几里得引理，$p_1$ 必整除某个 $q_j$；两者为素数，故 $p_1=q_j$。约去后重复配对；两边必同时约完，否则剩余素数的乘积等于 $1$，矛盾。因此两组因子仅顺序不同。}
 \block{试除判素}：合数 $n$ 必有素因数 $p\le\sqrt n$。
 \hint{$n=ab$，不可能 $a,b$ 都 $>\sqrt n$；较小因子的素因数满足上界。}
-\block{素数无穷}。\hint{若仅 $p_1,\ldots,p_k$，令 $Q=p_1\cdots p_k+1$；由于 $Q>1$，$Q$至少有一个素因数$q$（$q$可能等于$Q$）。$\forall i,\, Q \mod p_i=1$，故 $q\ne p_i$，也就是素数$q$未被列出，矛盾。}
+\block{素数无穷}。\hint{若仅 $p_1,\ldots,p_n$，令 $Q=p_1\cdots p_n+1$；由于 $Q>1$，$Q$至少有一个素因数$q$（$q$可能等于$Q$）。$\forall i,\, Q \mod p_i=1$，故 $q\ne p_i$，也就是素数$q$未被列出，矛盾。}
 \h{12\quad GCD（最大公因数）与 Bézout（贝祖）}
 $a,b\in\Z$ 不全为 $0$；$\gcd(a,b)$ 为最大正公因数；$\gcd(a,0)=|a|$（$a\ne0$）。
 \block{Relatively prime（互素）}：$\gcd(a,b)=1$。\\
-$a,b>0$，写为 $a=\prod p_i^{\alpha_i},b=\prod p_i^{\beta_i}$（补零指数），
+% Lecture 8, slides 20--21: exponents a_i,b_i.
+$a,b>0$，写为 $a=\prod p_i^{a_i},b=\prod p_i^{b_i}$（补零指数），
 \eq{\begin{aligned}
-\gcd(a,b)&=\prod_i p_i^{\min(\alpha_i,\beta_i)},\\
-\operatorname{lcm}(a,b)&=\prod_i p_i^{\max(\alpha_i,\beta_i)},\end{aligned}}
+\gcd(a,b)&=\prod_i p_i^{\min(a_i,b_i)},\\
+\operatorname{lcm}(a,b)&=\prod_i p_i^{\max(a_i,b_i)},\end{aligned}}
 \eq{\boxed{
 \gcd(a,b)\operatorname{lcm}(a,b)=ab.}
 }
@@ -339,23 +346,25 @@ $a,b>0$，写为 $a=\prod p_i^{\alpha_i},b=\prod p_i^{\beta_i}$（补零指数�
 \block{Euclid's lemma（素数整除引理）}：素数 $p\mid a_1\cdots a_n\Rightarrow p\mid a_i$（某个 $i$）。
 \hint{若 $p\nmid a_1$ 则 $\gcd(p,a_1)=1$，约去 $a_1$ 并反复使用互素整除引理。}
 \h{13\quad Linear Congruences（线性同余）}
-\block{Modular inverse（模逆元）}：$a^{-1}a\equiv1\pmod m$。
-\eq{a^{-1}\text{ 存在}\iff\gcd(a,m)=1\quad(m>1).}
-逆元模 $m$ 唯一；若 $sa+tm=1$，则 $\boxed{a^{-1}\equiv s\pmod m}$。
+% Lecture 8, slides 39--42: bar a denotes a modular inverse (not f^{-1}).
+\block{Modular inverse（模逆元）}：$\bar a a\equiv1\pmod m$。
+\eq{\bar a\text{ 存在}\iff\gcd(a,m)=1\quad(m>1).}
+逆元模 $m$ 唯一；若 $sa+tm=1$，则 $\boxed{\bar a\equiv s\pmod m}$。
 \hint{存在用 Bézout。必要性：若逆元 $x$ 存在，则 $ax\equiv1\pmod m$，即 $ax-km=1$（$k\in\Z$）。令 $d=\gcd(a,m)$，因 $d\mid a$ 且 $d\mid m$，故 $d\mid(ax-km)=1$；正整数 $d$ 只能为 $1$，所以 $a,m$ 互素。唯一性由 $ab\equiv ac\equiv1$ 约去 $a$。}
 \block{解 $ax\equiv b\pmod m$}：令 $d=\gcd(a,m)$。
 \eq{\text{有解}\iff d\mid b.}
 若 $d\mid b$，令 $a'=a/d,b'=b/d,m'=m/d$，
-\eq{\begin{gathered}x_0\equiv{(a')}^{-1}b'\pmod {m'},\\
+\eq{\begin{gathered}x_0\equiv\overline{a'}b'\pmod {m'},\\
 x\equiv x_0+km'\pmod m,\quad k=0,\ldots,d-1.
 \end{gathered}}
-模 $m$ 恰 $d$ 个解类；$m'=1$ 时所有整数均满足，取 $x_0=0$。$d=1$ 时直接 $x\equiv a^{-1}b\pmod m$。
+模 $m$ 恰 $d$ 个解类；$m'=1$ 时所有整数均满足，取 $x_0=0$。$d=1$ 时直接 $x\equiv\bar a b\pmod m$。
 \hint{必要：$ax-km=b$；充分：$d=sa+tm$ 乘 $b/d$ 构造解。两解之差满足 $m'\mid a'(x-x_0)$，互素约去 $a'$，得到所有解。}
 \h{14\quad CRT（中国剩余定理）}
-$m_i>1$ 两两互素，$M=\prod_i m_i$。\\方程组 $x\equiv a_i\pmod{m_i}$ 有唯一模 $M$ 的解。\\
-\block{解法一 (CRT)：}令 $M_i=M/m_i,\, y_i\equiv M_i^{-1}\pmod{m_i}$,
-\eq{\boxed{x\equiv\sum_{i} a_{i}M_{i}y_i\pmod M}.}
-\hint{对模 $m_i$，除第 $i$ 项外都为 $0$，该项为 $a_i$。两解之差被每个 $m_i$ 整除，互素使乘积 $M$ 也整除差，故唯一。}
+% Lecture 9, slides 3--5: total modulus m, partial products M_k, inverses y_k.
+$m_k>1$ 两两互素，$m=\prod_k m_k$。\\方程组 $x\equiv a_k\pmod{m_k}$ 有唯一模 $m$ 的解。\\
+\block{解法一 (CRT)：}令 $M_k=m/m_k$，$M_k y_k\equiv1\pmod{m_k}$，
+\eq{\boxed{x\equiv\sum_k a_kM_ky_k\pmod m}.}
+\hint{对模 $m_k$，除第 $k$ 项外都为 $0$，该项为 $a_k$。两解之差被每个 $m_k$ 整除，互素使乘积 $m$ 也整除差，故唯一。}
 \block{解法二 (回代)}：由首式写 $x=a_1+m_1t$，代入下一式解 $t$，逐式合并。
 \block{非互素模数}：系统可解 $\iff$ 对任意 $i,j$ 有
 \eq{a_i\equiv a_j\pmod{\gcd(m_i,m_j)}.}
@@ -375,9 +384,10 @@ $m_i>1$ 两两互素，$M=\prod_i m_i$。\\方程组 $x\equiv a_i\pmod{m_i}$ 有
 \block{Cryptanalysis（密码分析）}：无密钥恢复明文。
 字母编号 $A=0,\ldots,Z=25$。
 \block{Shift/Caesar cipher（移位/凯撒密码）}：
-\eq{C=(P+k)\bmod26,\quad P=(C-k)\bmod26.}
+% Lecture 9, slides 24--28: lowercase p,c for classical ciphers; f is encryption.
+\eq{f(p)=(p+k)\bmod26,\quad f^{-1}(c)=(c-k)\bmod26.}
 \block{Affine cipher（仿射密码）}，$\gcd(a,26)=1$：
-\eq{C=(aP+b)\bmod26,\quad P=a^{-1}(C-b)\bmod26.}
+\eq{c=f(p)=(ap+b)\bmod26,\quad p=\bar a(c-b)\bmod26.}
 \hint{移项后乘模逆元。移位密码可穷举 $26$ 个密钥或用字母频率分析。}
 \block{Private/symmetric key（私钥/对称密钥）}：双方共享秘密密钥；须安全交换。
 \block{Public key（公钥）}：公钥公开用于加密，私钥保密用于解密。
@@ -385,19 +395,20 @@ $m_i>1$ 两两互素，$M=\prod_i m_i$。\\方程组 $x\equiv a_i\pmod{m_i}$ 有
 \eq{p\nmid a\Rightarrow a^{p-1}\equiv1\pmod p,\quad a^p\equiv a\pmod p.}
 后一式对所有整数 $a$ 成立。
 \hint{乘以非零剩余类 $a$ 会置换 $1,\ldots,p-1$；各项相乘并约去 ${(p-1)!}$。$p\mid a$ 时后一式显然。}
-\block{RSA cryptosystem（RSA 密码系统，课件模型）}：取不同素数 $p,q$，$n=pq$，$\phi=(p-1)(q-1)$。
-\eq{\gcd(e,\phi)=1,\quad d\equiv e^{-1}\pmod\phi,\quad e,d>0.}
+\block{RSA cryptosystem（RSA 密码系统，课件模型）}：取不同素数 $p,q$，$n=pq$，$e,d>0$。
+\eq{\begin{gathered}\gcd(e,(p-1)(q-1))=1,\\ed\equiv1\pmod{(p-1)(q-1)}.\end{gathered}}
 公钥 $(n,e)$；私钥 $d$；$p,q$ 保密。消息分块满足 $0\le M<n$（字母转数字时保留前导零与块宽）。
 \eq{\boxed{C=M^e\bmod n,\qquad M=C^d\bmod n}.}
 \hint{$ed=1+k(p-1)(q-1)$。模 $p$，若 $p\nmid M$ 用费马得 $M^{ed}\equiv M$；若 $p\mid M$ 两边均 $0$。模 $q$ 同理，再由 CRT 得模 $pq$ 相等，覆盖所有消息块。}
 \block{RSA digital signature（数字签名，课件模型）}：
 \eq{S=M^d\bmod n,\qquad S^e\bmod n=M.}
 私钥签名，公钥验证；签名用于确认消息来源。
-\block{Primitive root（原根）}：模素数 $p$ 的 $r$，其幂遍历全部非零剩余类，即
+\block{Primitive root（原根）}：$p$ 素数，$r$ 满足
 \eq{\{r^j\bmod p:0\le j<p-1\}=\{1,\ldots,p-1\}.}
-\block{Diffie\textendash{}Hellman（密钥交换）}：公开素数 $p$、原根 $g$；Alice 秘选 $u$ 发 $A=g^u\bmod p$；Bob 秘选 $v$ 发 $B=g^v\bmod p$。
-\eq{\boxed{K=B^u\bmod p=A^v\bmod p=g^{uv}\bmod p}.}
-公开 $p,g,A,B$；保密 $u,v,K$。\hint{幂的乘法法则给出同一共享值。}
+% Lecture 9, slide 46: primitive root a; secret exponents k_1,k_2.
+\block{Diffie\textendash{}Hellman（密钥交换）}：公开素数 $p$、原根 $a$；Alice 秘选 $k_1$ 发 $a^{k_1}\bmod p$；Bob 秘选 $k_2$ 发 $a^{k_2}\bmod p$。
+\eq{\boxed{{(a^{k_2})}^{k_1}\bmod p={(a^{k_1})}^{k_2}\bmod p}.}
+共享密钥为 $a^{k_1k_2}\bmod p$；保密 $k_1,k_2$ 及共享密钥。\hint{幂的乘法法则给出同一共享值。}
 \h{17\quad Blockchain（区块链）}
 分布式账本；区块头包含前一区块的哈希，串联记录。
 \block{Merkle root（默克尔根）}：交易哈希逐层合并得到的摘要。
@@ -409,7 +420,8 @@ $m_i>1$ 两两互素，$M=\prod_i m_i$。\\方程组 $x\equiv a_i\pmod{m_i}$ 有
 \h{18\quad Prime Extras（素数补充）}
 \block{Mersenne prime（梅森素数）}：$M_p=2^p-1$ 为素数时，$p$ 必为素数；反之未必，如 $2^{11}-1=23\cdot89$。$2^5-1=31$。
 \hint{$p=ab$ 合数时 $2^{ab}-1$ 被 $2^a-1$ 整除。}
-\block{Lucas\textendash{}Lehmer（卢卡斯--莱默检验）}：奇素数 $p$，$s_0=4$，$s_{i+1}=(s_i^2-2)\bmod M_p$；$M_p$ 为素数 $\iff s_{p-2}=0$。$p=2$ 单独得 $M_2=3$。
+% Lecture 8, slide 35: capital S_i, indexed from S_0=4.
+\block{Lucas\textendash{}Lehmer（卢卡斯--莱默检验）}：奇素数 $p$，$S_0=4$，$S_i=(S_{i-1}^2-2)\bmod M_p$；$M_p$ 为素数 $\iff S_{p-2}=0$。$p=2$ 单独得 $M_2=3$。
 \block{阶乘末尾零}：
 \eq{v_5(n!)=\sum_{j\ge1}\left\lfloor\frac{n}{5^j}\right\rfloor.}
 \hint{数因子 $5$ 的总数；$5^j$ 的倍数各额外贡献一次，因子 $2$ 足够。}
