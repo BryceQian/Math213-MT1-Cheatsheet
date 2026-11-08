@@ -362,7 +362,7 @@ x\equiv x_0+km'\pmod m,\quad k=0,\ldots,d-1.
 \h{14\quad CRT（中国剩余定理）}
 % Lecture 9, slides 3--5: total modulus m, partial products M_k, inverses y_k.
 $m_k>1$ 两两互素，$m=\prod_k m_k$。\\方程组 $x\equiv a_k\pmod{m_k}$ 有唯一模 $m$ 的解。\\
-\block{解法一 (CRT)：}令 $M_k=m/m_k$，$M_k y_k\equiv1\pmod{m_k}$，
+\block{解法一 (CRT)：}令 $M_k=m/m_k$，$y_k\equiv M_k^{-1}\pmod{m_k}$，
 \eq{\boxed{x\equiv\sum_k a_kM_ky_k\pmod m}.}
 \hint{对模 $m_k$，除第 $k$ 项外都为 $0$，该项为 $a_k$。两解之差被每个 $m_k$ 整除，互素使乘积 $m$ 也整除差，故唯一。}
 \block{解法二 (回代)}：由首式写 $x=a_1+m_1t$，代入下一式解 $t$，逐式合并。
@@ -395,14 +395,14 @@ $m_k>1$ 两两互素，$m=\prod_k m_k$。\\方程组 $x\equiv a_k\pmod{m_k}$ 有
 \eq{p\nmid a\Rightarrow a^{p-1}\equiv1\pmod p,\quad a^p\equiv a\pmod p.}
 后一式对所有整数 $a$ 成立。
 \hint{乘以非零剩余类 $a$ 会置换 $1,\ldots,p-1$；各项相乘并约去 ${(p-1)!}$。$p\mid a$ 时后一式显然。}
-\block{RSA cryptosystem（RSA 密码系统，课件模型）}：取不同素数 $p,q$，$n=pq$，$e,d>0$。
+\block{RSA cryptosystem}：取不同素数 $p,q$，$n=pq$，$e,d>0$。
 \eq{\begin{gathered}\gcd(e,(p-1)(q-1))=1,\\ed\equiv1\pmod{(p-1)(q-1)}.\end{gathered}}
 公钥 $(n,e)$；私钥 $d$；$p,q$ 保密。消息分块满足 $0\le M<n$（字母转数字时保留前导零与块宽）。
 \eq{\boxed{C=M^e\bmod n,\qquad M=C^d\bmod n}.}
 \hint{$ed=1+k(p-1)(q-1)$。模 $p$，若 $p\nmid M$ 用费马得 $M^{ed}\equiv M$；若 $p\mid M$ 两边均 $0$。模 $q$ 同理，再由 CRT 得模 $pq$ 相等，覆盖所有消息块。}
-\block{RSA digital signature（数字签名，课件模型）}：
+\block{RSA digital signature}：
 \eq{S=M^d\bmod n,\qquad S^e\bmod n=M.}
-私钥签名，公钥验证；签名用于确认消息来源。
+\b{私钥签名，公钥验证}；签名用于确认消息来源。
 \block{Primitive root（原根）}：$p$ 素数，$r$ 满足
 \eq{\{r^j\bmod p:0\le j<p-1\}=\{1,\ldots,p-1\}.}
 % Lecture 9, slide 46: primitive root a; secret exponents k_1,k_2.
