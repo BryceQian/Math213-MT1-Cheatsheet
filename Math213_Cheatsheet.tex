@@ -40,7 +40,7 @@
 \raggedcolumns
 \newenvironment{sheetcolumns}{\linespread{1}\fontsize{7.4}{8.7}\selectfont\raggedright\emergencystretch=1em\begin{multicols}{3}}{\end{multicols}}
 \begin{document}
-\titleline{逻辑 · 集合 · 函数 · 算法 · 数论 · 密码学}{}
+\titleline{逻辑 · 集合 · 函数 · 算法 · 数论}{}
 \begin{sheetcolumns}
 \h{1\quad Propositional Logic（命题逻辑）}
 \block{Truth table（真值表）}：$n$ 个变量有 $2^n$ 行。
@@ -136,7 +136,7 @@ A=B&\iff A\subseteq B\land B\subseteq A\\
 &\iff\forall x(x\in A\leftrightarrow x\in B),\\
 \Pow(A)&=\{S:S\subseteq A\},\quad |\Pow(A)|=2^{|A|},\\
 A\times B&=\{(a,b):a\in A,b\in B\},\\
-|A_1\times\cdots\times A_n|&=\prod_i|A_i|,\quad |A^n|=|A|^n.
+|A\times B|&=|A||B|\quad |A^n|=|A|^n.
 \end{aligned}}
 计数式用于有限集合；
 \block{Relation（关系）} $R\subseteq A\times B$。$\varnothing\subseteq A$；$|\varnothing|=0$；$|\{\varnothing\}|=1$；$\Pow(\varnothing)=\{\varnothing\}$。
@@ -144,6 +144,7 @@ A\times B&=\{(a,b):a\in A,b\in B\},\\
 A\cup B&=\{x:x\in A\lor x\in B\},\\
 A\cap B&=\{x:x\in A\land x\in B\},\\
 A-B&=A\cap\bar B,\quad\bar A=U-A,\\
+A\oplus B&=(A-B)\cup(B-A)\text{ (二者之一)}\\
 x\in\bigcup_{i=1}^n A_i&\iff\exists i\in\{1,\ldots,n\}:x\in A_i,\\
 x\in\bigcap_{i=1}^n A_i&\iff\forall i\in\{1,\ldots,n\}:x\in A_i.
 \end{aligned}}
@@ -167,23 +168,35 @@ x\in\bigcap_{i=1}^n A_i&\iff\forall i\in\{1,\ldots,n\}:x\in A_i.
 \text{互补： }&A\cup\bar A=U,\quad A\cap\bar A=\varnothing.
 \end{aligned}}
 \h{5\quad 函数与取整}
-$f:A\to B$：每个 $a\in A$ 恰有一个输出；
-\block{Domain（定义域）} $A$；
-\block{Codomain（陪域）} $B$；
-\block{Range（值域）} $f(A)\subseteq B$。
-\eq{f(S)=\{f(s):s\in S\}\quad(S\subseteq A).}
-\block{Injective（单射）}：
+% Lecture 4, slides 41--46: function, domain, codomain, image, preimage, range.
+$f:A\to B$：每个 $a\in A$ 恰有一个输出 $f(a)\in B$；不同输入可有相同输出。
+\block{Domain（定义域）} $A$；\b{Codomain（陪域）} $B$（指定的目标集合）。
+\block{Image（像）/Preimage（原像）}：若 $f(a)=b$，则 $b$ 是 $a$ 的像，$a$ 是 $b$ 的一个原像。每个输入的像唯一；$b\in B$ 的原像可有零个、一个或多个。
+\block{Image of a subset（集合的像）}：$S\subseteq A$，
+\eq{f(S)=\{f(s):s\in S\}\subseteq B.}
+\block{Range（值域）}：所有实际输出组成的集合
+\eq{f(A)=\{f(a):a\in A\}\subseteq B.}
+陪域不一定等于值域；相等恰好是满射。
+% Set-preimage notation is a supplementary clarification of element preimages.
+\block{Preimage set（原像集合，补充记号）}：$T\subseteq B$，
+\eq{f^{-1}(T)=\{a\in A:f(a)\in T\}.}
+$b$ 的全部原像为 $f^{-1}(\{b\})$；此集合记号不要求反函数存在。例：$f:\R\to\R,\ f(x)=x^2$，值域 $[0,\infty)$，$f(\{-2,2\})=\{4\}$，$f^{-1}(\{4\})=\{-2,2\}$，$f^{-1}(\{-1\})=\varnothing$。
+\block{表示法}：逐一指定映射 $a\mapsto f(a)$、公式，或有序对集合 $\{(a,f(a)):a\in A\}\subseteq A\times B$；每个 $a$ 恰配一个 $b$。
+\block{Injective（单射，one-to-one）}：
 \eq{\forall x,y\in A:\ f(x)=f(y)\Rightarrow x=y.}
 等价于 $x\ne y\Rightarrow f(x)\ne f(y)$。
-\block{Surjective（满射）}：
+\block{Surjective（满射，onto）}：
 \eq{\forall b\in B\ \exists a\in A:\ f(a)=b\iff f(A)=B.}
-\block{Bijective（双射）}：单射且满射 $\iff$ 反函数 $f^{-1}:B\to A$ 存在；$f^{-1}(b)=a\iff f(a)=b$。
+\block{Bijective（双射，one-to-one correspondence）}：单射且满射，即每个 $b\in B$ 恰有一个原像。
+\block{Inverse function（反函数）}：$f$ 双射 $\iff$ 反函数 $f^{-1}:B\to A$ 存在；$f^{-1}(b)=a\iff f(a)=b$。反函数 $f^{-1}$ 不是倒数 $1/f$。
 有限且 $|A|=|B|$ 时，单射 $\iff$ 满射；无限时不保证。
 \hint{单射从相同输出推相同输入；满射任取目标值并解出原像；双射需两者。}
+\block{Identity function（恒等函数）}：$\iota_A:A\to A$，$\iota_A(x)=x$，是双射。
 \block{Composition（复合）}：$g:A\to B,f:B\to C$，
-\eq{(f\circ g)(x)=f(g(x)),\quad \iota_A(x)=x.}
+\eq{(f\circ g)(x)=f(g(x))\quad\text{（先 $g$ 后 $f$）}.}
 若 $f:A\to B$ 双射，$f^{-1}\circ f=\iota_A$，$f\circ f^{-1}=\iota_B$。
 $f\circ g$ 与 $g\circ f$ 一般不同，后者可能无定义。
+\block{实值函数运算}：$f_1,f_2:A\to\R$，
 \eq{\begin{aligned}
 (f_1+f_2)(x)&=f_1(x)+f_2(x),\\
 (f_1f_2)(x)&=f_1(x)f_2(x).
@@ -206,6 +219,8 @@ x-1&<\lfloor x\rfloor\le x\le\lceil x\rceil<x+1,\\
 &=2n+\lfloor\epsilon+\tfrac12\rfloor.
 \end{aligned}}
 若 $0\le\epsilon<1/2$，$\lfloor2\epsilon\rfloor=\lfloor\epsilon+1/2\rfloor=0$；若 $1/2\le\epsilon<1$，两者均为 $1$。两种情况穷尽，故左右相等。}
+% Lecture 5, slide 16: factorial function.
+\block{Factorial（阶乘）}：$n\ge0$ 为整数，$0!=1$；$n!=1\cdot2\cdots n=n(n-1)!$（$n\ge1$）。
 \h{6\quad Sequences（数列）与 Summations（求和）}
 \block{Arithmetic 等差；Geometric 等比}
 
@@ -320,6 +335,10 @@ $n=0$ 时结果为 $1\bmod m$。
 \block{试除判素}：合数 $n$ 必有素因数 $p\le\sqrt n$。
 \hint{$n=ab$，不可能 $a,b$ 都 $>\sqrt n$；较小因子的素因数满足上界。}
 \block{素数无穷}。\hint{若仅 $p_1,\ldots,p_n$，令 $Q=p_1\cdots p_n+1$；由于 $Q>1$，$Q$至少有一个素因数$q$（$q$可能等于$Q$）。$\forall i,\, Q \mod p_i=1$，故 $q\ne p_i$，也就是素数$q$未被列出，矛盾。}
+\block{Fermat's little theorem（费马小定理）}：$p$ 素数，
+\eq{p\nmid a\Rightarrow a^{p-1}\equiv1\pmod p,\quad a^p\equiv a\pmod p.}
+后一式对所有整数 $a$ 成立。
+\hint{乘以非零剩余类 $a$ 会置换 $1,\ldots,p-1$；各项相乘并约去 ${(p-1)!}$。$p\mid a$ 时后一式显然。}
 \h{12\quad GCD（最大公因数）与 Bézout（贝祖）}
 $a,b\in\Z$ 不全为 $0$；$\gcd(a,b)$ 为最大正公因数；$\gcd(a,0)=|a|$（$a\ne0$）。
 \block{Relatively prime（互素）}：$\gcd(a,b)=1$。\\
@@ -378,6 +397,8 @@ $m_k>1$ 两两互素，$m=\prod_k m_k$。\\方程组 $x\equiv a_k\pmod{m_k}$ 有
 \block{Hash function（哈希函数）}：任意长度映射为固定长度；表地址常用 $h(k)=k\bmod m$。
 \block{Collision（冲突）}：不同键同地址；
 \block{Linear probing（线性探测）}：依次试 $(h(k)+j)\bmod m$，$j=0,1,\ldots$，直到空位。
+% 暂时不考：密码学与区块链。删除本行后的 \iffalse 和结尾的 \fi 即可恢复。
+\iffalse
 \h{16\quad Cryptography（密码学）}
 \block{Cryptanalysis（密码分析）}：无密钥恢复明文。
 字母编号 $A=0,\ldots,Z=25$。
@@ -389,10 +410,6 @@ $m_k>1$ 两两互素，$m=\prod_k m_k$。\\方程组 $x\equiv a_k\pmod{m_k}$ 有
 \hint{移项后乘模逆元。移位密码可穷举 $26$ 个密钥或用字母频率分析。}
 \block{Private/symmetric key（私钥/对称密钥）}：双方共享秘密密钥；须安全交换。
 \block{Public key（公钥）}：公钥公开用于加密，私钥保密用于解密。
-\block{Fermat's little theorem（费马小定理）}：$p$ 素数，
-\eq{p\nmid a\Rightarrow a^{p-1}\equiv1\pmod p,\quad a^p\equiv a\pmod p.}
-后一式对所有整数 $a$ 成立。
-\hint{乘以非零剩余类 $a$ 会置换 $1,\ldots,p-1$；各项相乘并约去 ${(p-1)!}$。$p\mid a$ 时后一式显然。}
 \block{RSA cryptosystem}：取不同素数 $p,q$，$n=pq$，$e,d>0$。\\
 e is admissable $\iff \gcd(e,(p-1)(q-1))=1$
 \eq{ed\equiv1\pmod{(p-1)(q-1)}.}
@@ -416,7 +433,9 @@ e is admissable $\iff \gcd(e,(p-1)(q-1))=1$
 目标越小，挖矿越难。
 \block{篡改链}：改交易 $\Rightarrow$ 根变化 $\Rightarrow$ 区块头哈希变化 $\Rightarrow$ 后继链接失效，须重做后续工作量。
 \block{ECDSA（椭圆曲线数字签名）}：用私钥签名以授权花费输出；公钥验证。
-\h{18\quad Prime Extras（素数补充）}
+\fi
+% 暂时不考的内容结束；恢复后将下面的章节号改回 18。
+\h{16\quad Prime Extras（素数补充）}
 \block{Mersenne prime（梅森素数）}：$M_p=2^p-1$ 为素数时，$p$ 必为素数；反之未必，如 $2^{11}-1=23\cdot89$。$2^5-1=31$。
 \hint{$p=ab$ 合数时 $2^{ab}-1$ 被 $2^a-1$ 整除。}
 % Lecture 8, slide 35: capital S_i, indexed from S_0=4.
